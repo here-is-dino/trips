@@ -65,7 +65,7 @@ const app = {
         setTimeout(() => {
           const trip = getTrip(this.currentTripId);
           if (trip) this.fetchWeather(trip);
-        }, 100);
+        }, 300);
         break;
       case 'stop':
         main.innerHTML = this.renderStop(this.currentTripId, this.currentStopId);
@@ -401,7 +401,11 @@ const app = {
     if (!trip.map || !trip.map.center) return;
     const [lat, lng] = trip.map.center;
     const widget = document.getElementById('weather-widget');
-    if (!widget) return;
+    if (!widget) {
+      // Retry after a short delay — DOM might not be ready yet
+      setTimeout(() => this.fetchWeather(trip), 200);
+      return;
+    }
 
     try {
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&forecast_days=7`;
@@ -410,7 +414,9 @@ const app = {
       if (!data.daily) throw new Error('No data');
       this.renderWeather(data.daily, widget);
     } catch (err) {
-      widget.innerHTML = `<div class="weather-error">${currentLang === 'bg' ? 'Няма данни за времето' : 'Weather unavailable'}</div>`;
+      if (widget) {
+        widget.innerHTML = `<div class="weather-error">${currentLang === 'bg' ? 'Няма данни за времето' : 'Weather unavailable'}</div>`;
+      }
     }
   },
 
