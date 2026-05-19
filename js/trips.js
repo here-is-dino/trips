@@ -407,6 +407,15 @@ function formatDate(dateStr) {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+// Helper: get day of week
+function getWeekday(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00');
+  if (currentLang === 'bg') {
+    return d.toLocaleDateString('bg-BG', { weekday: 'short' });
+  }
+  return d.toLocaleDateString('en-US', { weekday: 'short' });
+}
+
 // Helper: get status label
 function getStatusLabel(status) {
   return t(status) || status;

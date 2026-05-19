@@ -159,6 +159,7 @@ const app = {
                 <div class="day-title-block">
                   <span class="day-number">${t('dayByDay').split(' ')[0]} ${day.day}</span>
                   <span class="day-date">${formatDate(day.date)}</span>
+                  <span class="day-weekday">${getWeekday(day.date)}</span>
                 </div>
                 <div class="day-info">
                   <span class="day-title">${L(day.title)}</span>
@@ -439,18 +440,25 @@ const app = {
       ? ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
       : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+    const monthNames = currentLang === 'bg'
+      ? ['яну', 'фев', 'мар', 'апр', 'май', 'юни', 'юли', 'авг', 'сеп', 'окт', 'ное', 'дек']
+      : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
     const today = new Date().toISOString().split('T')[0];
 
     let html = `<div class="weather-grid">`;
     days.forEach((date, i) => {
       const d = new Date(date + 'T12:00:00');
-      const dayName = date === today
+      const isToday = date === today;
+      const dayName = isToday
         ? (currentLang === 'bg' ? 'Днес' : 'Today')
         : dayNames[d.getDay()];
+      const dateLabel = `${d.getDate()} ${monthNames[d.getMonth()]}`;
       const icon = wmoIcons[codes[i]] || '🌡️';
       html += `
-        <div class="weather-day">
+        <div class="weather-day${isToday ? ' weather-today' : ''}">
           <span class="weather-day-name">${dayName}</span>
+          <span class="weather-date">${dateLabel}</span>
           <span class="weather-icon">${icon}</span>
           <span class="weather-temps">${Math.round(maxes[i])}° / ${Math.round(mins[i])}°</span>
         </div>

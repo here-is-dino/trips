@@ -275,12 +275,21 @@ a:hover { text-decoration: underline; }
   border: 1px solid var(--hairline);
   border-radius: 10px;
 }
+.weather-day.weather-today {
+  border-color: var(--accent);
+  background: #f5f0e0;
+}
 .weather-day-name {
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--muted);
+}
+.weather-date {
+  font-size: 10px;
+  color: var(--muted);
+  opacity: 0.7;
 }
 .weather-icon {
   font-size: 22px;
@@ -346,6 +355,14 @@ a:hover { text-decoration: underline; }
 .day-date {
   font-size: 12px;
   color: var(--body);
+}
+.day-weekday {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.7;
 }
 .day-info { flex: 1; }
 .day-title {
