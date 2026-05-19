@@ -8,7 +8,7 @@ const TRIPS = [
     distance: '310 km',
     status: 'planned', // planned | active | completed
     summary: 'A two-day loop through the Struma valley and Osogovo foothills — gorges, fortresses, galleries, and thermal pools. Perfect first van trip of the season.',
-    coverImage: null, // path to cover image when available
+    coverImage: 'assets/images/cover-sofia-weekend.jpg',
     region: 'Bulgaria — Struma & Osogovo',
     vehicle: 'VW T3 Westfalia Syncro',
     crew: ['Dino', 'Joshi', 'Bourya', 'Clement', 'Archie'],
@@ -104,7 +104,7 @@ const TRIPS = [
     distance: '~340 km',
     status: 'planned',
     summary: 'A dramatic two-day loop into the western Rhodopes — medieval fortress ruins, a spectacular gorge with tunnels and a massive dam, wild camping on the mountain plateau, then back through Devin and the timeless village of Borino.',
-    coverImage: null,
+    coverImage: 'assets/images/cover-rhodope-loop.jpg',
     region: 'Bulgaria — Western Rhodopes',
     vehicle: 'VW T3 Westfalia Syncro',
     crew: ['Dino', 'Joshi', 'Bourya', 'Clement', 'Archie'],
