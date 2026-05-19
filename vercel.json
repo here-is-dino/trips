@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/trip/(.*)/stop/(.*)", "destination": "/index.html" },
     { "source": "/trip/(.*)", "destination": "/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
