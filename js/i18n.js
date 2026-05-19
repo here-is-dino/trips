@@ -31,6 +31,7 @@ const LOCALES = {
     tips: 'Tips',
     yes: 'Yes',
     no: 'No',
+    openInMaps: 'Open in Google Maps',
 
     // Status
     planned: 'Planned',
@@ -49,15 +50,15 @@ const LOCALES = {
   },
   bg: {
     // Site
-    siteTitle: 'Пътешествия с Горан',
+    siteTitle: 'Приключения с Горан',
     siteSubtitle: 'Дино, Йоши, Буря, Климент & Арчи — на път с VW T3',
     footer: 'VW T3 Westfalia Syncro · България и не само · От 2025',
 
     // Dashboard
-    allTrips: 'Всички пътувания',
+    allTrips: 'Всички приключения',
 
     // Trip detail
-    backToAll: '← Всички пътувания',
+    backToAll: '← Всички приключения',
     backToTrip: '← {trip}',
     dayByDay: 'Ден по ден',
     packingList: 'Списък за опаковане',
@@ -78,6 +79,7 @@ const LOCALES = {
     tips: 'Съвети',
     yes: 'Да',
     no: 'Не',
+    openInMaps: 'Отвори в Google Maps',
 
     // Status
     planned: 'Планирано',
@@ -85,8 +87,8 @@ const LOCALES = {
     completed: 'Завършено',
 
     // Errors
-    tripNotFound: 'Пътуването не е намерено',
-    tripNotFoundMsg: 'Това пътуване не съществува или е премахнато.',
+    tripNotFound: 'Приключението не е намерено',
+    tripNotFoundMsg: 'Това приключение не съществува или е премахнато.',
     stopNotFound: 'Спирката не е намерена',
     stopNotFoundMsg: 'Тази спирка не съществува или е премахната.',
 
@@ -103,6 +105,7 @@ function setLang(lang) {
   if (lang !== 'en' && lang !== 'bg') return;
   currentLang = lang;
   localStorage.setItem('lang', lang);
+  app.updateTopBar();
   app.render();
 }
 

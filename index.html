@@ -13,12 +13,17 @@
   <base href="https://tripswithforest.vercel.app/">
 </head>
 <body>
-  <!-- Language toggle — fixed position, outside #main so it persists across renders -->
-  <button class="lang-toggle" id="lang-toggle" onclick="toggleLang()" title="Switch language">
-    <span class="lang-current">EN</span>
-    <span class="lang-sep">/</span>
-    <span class="lang-other">BG</span>
-  </button>
+  <!-- Top bar: All trips + Lang toggle — fixed position, persists across renders -->
+  <div class="top-bar">
+    <button class="top-bar-btn top-bar-back" id="all-trips-btn" onclick="app.navigate('dashboard');" style="display:none;">
+      ← <span id="all-trips-label">All trips</span>
+    </button>
+    <button class="top-bar-btn lang-toggle" id="lang-toggle" onclick="toggleLang()" title="Switch language">
+      <span class="lang-current" id="lang-current">EN</span>
+      <span class="lang-sep">/</span>
+      <span class="lang-other" id="lang-other">BG</span>
+    </button>
+  </div>
 
   <main id="main"></main>
   <!-- Leaflet JS -->

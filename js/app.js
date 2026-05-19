@@ -3,10 +3,13 @@ const app = {
   currentPage: 'dashboard',
   currentTripId: null,
   currentStopId: null,
+  weatherData: null,       // cached weather data for the trip
+  hourlyWeatherData: null, // cached hourly weather data
 
   init() {
     this.parseUrl();
     window.addEventListener('popstate', () => this.parseUrl());
+    this.updateTopBar();
   },
 
   parseUrl() {
@@ -28,6 +31,7 @@ const app = {
       this.currentStopId = null;
     }
     this.render();
+    this.updateTopBar();
   },
 
   navigate(page, params = {}) {
@@ -46,7 +50,29 @@ const app = {
       window.history.pushState({}, '', '/');
     }
     this.render();
+    this.updateTopBar();
     window.scrollTo(0, 0);
+  },
+
+  // ── Top bar management ──────────────────────────────────
+  updateTopBar() {
+    const allTripsBtn = document.getElementById('all-trips-btn');
+    const allTripsLabel = document.getElementById('all-trips-label');
+    const langCurrent = document.getElementById('lang-current');
+    const langOther = document.getElementById('lang-other');
+
+    if (allTripsBtn) {
+      allTripsBtn.style.display = this.currentPage !== 'dashboard' ? '' : 'none';
+    }
+    if (allTripsLabel) {
+      allTripsLabel.textContent = t('allTrips');
+    }
+    if (langCurrent) {
+      langCurrent.textContent = currentLang.toUpperCase();
+    }
+    if (langOther) {
+      langOther.textContent = currentLang === 'en' ? 'BG' : 'EN';
+    }
   },
 
   render() {
@@ -134,10 +160,8 @@ const app = {
 
     return `
       <div class="page-trip">
-        <nav class="trip-nav">
-          <a href="/" onclick="app.navigate('dashboard'); return false;" class="back-link">← ${t('allTrips')}</a>
-        </nav>
         <header class="trip-header">
+          ${trip.coverImage ? `<img src="${trip.coverImage}" alt="${L(trip.title)}" class="trip-hero-image">` : ''}
           <span class="trip-status status-${trip.status}">${getStatusLabel(trip.status)}</span>
           <h1>${L(trip.title)}</h1>
           <p class="trip-meta">
@@ -153,7 +177,9 @@ const app = {
         </div>
         <section class="trip-days">
           <h2>${t('dayByDay')}</h2>
-          ${trip.days.map(day => `
+          ${trip.days.map(day => {
+            const dayWeather = this.getDayWeather(day.date);
+            return `
             <details class="day-card" ${day.day === 1 ? 'open' : ''}>
               <summary class="day-header">
                 <div class="day-title-block">
@@ -164,6 +190,15 @@ const app = {
                 <div class="day-info">
                   <span class="day-title">${L(day.title)}</span>
                   <span class="day-distance">${day.distance}</span>
+                </div>
+                <div class="day-weather ${dayWeather ? '' : 'loading'}"
+                     data-date="${day.date}"
+                     data-trip-id="${trip.id}"
+                     onclick="app.openWeatherPopup('${day.date}', '${trip.id}', event)">
+                  ${dayWeather
+                    ? `<span class="day-weather-icon">${dayWeather.icon}</span><span class="day-weather-temp">${dayWeather.max}° / ${dayWeather.min}°</span>`
+                    : `<span class="day-weather-icon">—</span>`
+                  }
                 </div>
                 <span class="day-toggle">▾</span>
               </summary>
@@ -182,7 +217,7 @@ const app = {
                 ${day.gallery && day.gallery.length > 0 ? this.renderGallery(day.gallery) : ''}
               </div>
             </details>
-          `).join('')}
+          `}).join('')}
         </section>
 
         ${trip.packing ? `
@@ -307,6 +342,12 @@ const app = {
             ` : ''}
           </div>
 
+          ${stop.mapsUrl ? `
+            <a href="${stop.mapsUrl}" target="_blank" rel="noopener" class="stop-maps-btn">
+              📍 ${t('openInMaps')}
+            </a>
+          ` : ''}
+
           ${stop.highlights && ((currentLang === 'bg' ? stop.highlights.bg : stop.highlights.en) || []).length > 0 ? `
             <section class="stop-section">
               <h2>${t('highlights')}</h2>
@@ -403,17 +444,23 @@ const app = {
     const [lat, lng] = trip.map.center;
     const widget = document.getElementById('weather-widget');
     if (!widget) {
-      // Retry after a short delay — DOM might not be ready yet
       setTimeout(() => this.fetchWeather(trip), 200);
       return;
     }
 
     try {
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&forecast_days=7`;
+      // Fetch both daily and hourly data
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=temperature_2m_max,temperature_2m_min,weathercode&hourly=temperature_2m,weathercode,precipitation_probability,windspeed_10m&timezone=auto&forecast_days=7`;
       const res = await fetch(url);
       const data = await res.json();
       if (!data.daily) throw new Error('No data');
+
+      this.weatherData = data.daily;
+      this.hourlyWeatherData = data.hourly;
+      this.weatherLocation = trip.region ? L(trip.region) : `${lat.toFixed(2)}, ${lng.toFixed(2)}`;
+
       this.renderWeather(data.daily, widget);
+      this.updateDayWeatherBadges();
     } catch (err) {
       if (widget) {
         widget.innerHTML = `<div class="weather-error">${currentLang === 'bg' ? 'Няма данни за времето' : 'Weather unavailable'}</div>`;
@@ -421,20 +468,38 @@ const app = {
     }
   },
 
+  // Get weather for a specific day from cached data
+  getDayWeather(dateStr) {
+    if (!this.weatherData || !this.weatherData.time) return null;
+    const idx = this.weatherData.time.indexOf(dateStr);
+    if (idx === -1) return null;
+    const code = this.weatherData.weathercode[idx];
+    return {
+      icon: wmoIcon(code),
+      max: Math.round(this.weatherData.temperature_2m_max[idx]),
+      min: Math.round(this.weatherData.temperature_2m_min[idx]),
+      code: code,
+    };
+  },
+
+  // Update all day weather badges after data loads
+  updateDayWeatherBadges() {
+    document.querySelectorAll('.day-weather').forEach(el => {
+      const date = el.dataset.date;
+      if (!date) return;
+      const w = this.getDayWeather(date);
+      if (w) {
+        el.classList.remove('loading');
+        el.innerHTML = `<span class="day-weather-icon">${w.icon}</span><span class="day-weather-temp">${w.max}° / ${w.min}°</span>`;
+      }
+    });
+  },
+
   renderWeather(daily, widget) {
     const days = daily.time;
     const maxes = daily.temperature_2m_max;
     const mins = daily.temperature_2m_min;
     const codes = daily.weathercode;
-
-    const wmoIcons = {
-      0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
-      45: '🌫️', 48: '🌫️', 51: '🌦️', 53: '🌦️', 55: '🌧️',
-      61: '🌧️', 63: '🌧️', 65: '🌧️', 66: '🌧️', 67: '🌧️',
-      71: '🌨️', 73: '🌨️', 75: '🌨️', 77: '🌨️',
-      80: '🌦️', 81: '🌧️', 82: '🌧️',
-      85: '🌨️', 86: '🌨️', 95: '⛈️', 96: '⛈️', 99: '⛈️',
-    };
 
     const dayNames = currentLang === 'bg'
       ? ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
@@ -454,7 +519,7 @@ const app = {
         ? (currentLang === 'bg' ? 'Днес' : 'Today')
         : dayNames[d.getDay()];
       const dateLabel = `${d.getDate()} ${monthNames[d.getMonth()]}`;
-      const icon = wmoIcons[codes[i]] || '🌡️';
+      const icon = wmoIcon(codes[i]);
       html += `
         <div class="weather-day${isToday ? ' weather-today' : ''}">
           <span class="weather-day-name">${dayName}</span>
@@ -466,6 +531,97 @@ const app = {
     });
     html += `</div>`;
     widget.innerHTML = html;
+  },
+
+  // ── Hourly Weather Popup ────────────────────────────────
+  openWeatherPopup(dateStr, tripId, event) {
+    if (event) event.stopPropagation();
+    const trip = getTrip(tripId);
+    const dayData = this.getDayWeather(dateStr);
+    if (!dayData || !this.hourlyWeatherData) return;
+
+    // Get hourly data for this day
+    const hTime = this.hourlyWeatherData.time;
+    const hTemp = this.hourlyWeatherData.temperature_2m;
+    const hCode = this.hourlyWeatherData.weathercode;
+    const hPrecip = this.hourlyWeatherData.precipitation_probability;
+    const hWind = this.hourlyWeatherData.windspeed_10m;
+
+    // Find indices for this date
+    const dayIndices = [];
+    hTime.forEach((t, i) => {
+      if (t.startsWith(dateStr)) dayIndices.push(i);
+    });
+
+    // Build daily summary for the trip's days
+    const dailyHtml = trip.days.map(day => {
+      const w = this.getDayWeather(day.date);
+      if (!w) return '';
+      const dd = new Date(day.date + 'T12:00:00');
+      const dayName = currentLang === 'bg'
+        ? ['Нд','Пн','Вт','Ср','Чт','Пт','Сб'][dd.getDay()]
+        : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dd.getDay()];
+      return `
+        <div class="weather-popup-day">
+          <div class="weather-popup-day-name">${dayName}</div>
+          <div class="weather-popup-day-icon">${w.icon}</div>
+          <div class="weather-popup-day-temps">${w.max}° / ${w.min}°</div>
+        </div>
+      `;
+    }).join('');
+
+    // Build hourly rows
+    const hourlyHtml = dayIndices.map(i => {
+      const timeStr = hTime[i].split('T')[1];
+      const icon = wmoIcon(hCode[i]);
+      return `
+        <div class="weather-popup-hour">
+          <div class="weather-popup-hour-time">${timeStr}</div>
+          <div class="weather-popup-hour-icon">${icon}</div>
+          <div class="weather-popup-hour-temp">${Math.round(hTemp[i])}°</div>
+          <div class="weather-popup-hour-detail">
+            <span>💧 ${hPrecip[i]}%</span>
+            <span>💨 ${Math.round(hWind[i])} km/h</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const dateObj = new Date(dateStr + 'T12:00:00');
+    const dateFormatted = dateObj.toLocaleDateString(currentLang === 'bg' ? 'bg-BG' : 'en-US', {
+      weekday: 'long', day: 'numeric', month: 'long'
+    });
+
+    const locationName = this.weatherLocation || (trip.region ? L(trip.region) : '');
+
+    const popupHtml = `
+      <div class="weather-popup-overlay active" id="weather-popup-overlay" onclick="app.closeWeatherPopup(event)">
+        <div class="weather-popup" onclick="event.stopPropagation()">
+          <div class="weather-popup-header">
+            <div>
+              <div class="weather-popup-title">${dateFormatted}</div>
+              <div class="weather-popup-location">📍 ${locationName}</div>
+            </div>
+            <button class="weather-popup-close" onclick="app.closeWeatherPopup()">✕</button>
+          </div>
+          <div class="weather-popup-daily">${dailyHtml}</div>
+          <div class="weather-popup-hourly-title">${currentLang === 'bg' ? 'Почасово време' : 'Hourly forecast'}</div>
+          <div class="weather-popup-hourly">${hourlyHtml}</div>
+        </div>
+      </div>
+    `;
+
+    // Remove existing popup if any
+    const existing = document.getElementById('weather-popup-overlay');
+    if (existing) existing.remove();
+
+    document.body.insertAdjacentHTML('beforeend', popupHtml);
+  },
+
+  closeWeatherPopup(event) {
+    if (event && event.target !== event.currentTarget) return;
+    const popup = document.getElementById('weather-popup-overlay');
+    if (popup) popup.remove();
   },
 
   // ── Lightbox ────────────────────────────────────────────
@@ -480,7 +636,25 @@ const app = {
   },
 };
 
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') app.closeLightbox(); });
+// ── WMO weather code → emoji ─────────────────────────────
+function wmoIcon(code) {
+  const map = {
+    0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
+    45: '🌫️', 48: '🌫️', 51: '🌦️', 53: '🌦️', 55: '🌧️',
+    61: '🌧️', 63: '🌧️', 65: '🌧️', 66: '🌧️', 67: '🌧️',
+    71: '🌨️', 73: '🌨️', 75: '🌨️', 77: '🌨️',
+    80: '🌦️', 81: '🌧️', 82: '🌧️',
+    85: '🌨️', 86: '🌨️', 95: '⛈️', 96: '⛈️', 99: '⛈️',
+  };
+  return map[code] || '🌡️';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    app.closeLightbox();
+    app.closeWeatherPopup();
+  }
+});
 document.addEventListener('DOMContentLoaded', () => {
   app.init();
   // Delegated click handler for stop links in schedule
