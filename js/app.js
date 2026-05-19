@@ -60,6 +60,10 @@ const app = {
       case 'trip':
         main.innerHTML = this.renderTrip(this.currentTripId);
         requestAnimationFrame(() => this.initMap(this.currentTripId));
+        requestAnimationFrame(() => {
+          const trip = getTrip(this.currentTripId);
+          if (trip) this.fetchWeather(trip);
+        });
         break;
       case 'stop':
         main.innerHTML = this.renderStop(this.currentTripId, this.currentStopId);
@@ -142,6 +146,9 @@ const app = {
           <p class="trip-summary">${L(trip.summary)}</p>
         </header>
         <div class="trip-map" id="trip-map"></div>
+        <div class="weather-widget" id="weather-widget">
+          <div class="weather-loading">${currentLang === 'bg' ? 'Зареждане...' : 'Loading weather...'}</div>
+        </div>
         <section class="trip-days">
           <h2>${t('dayByDay')}</h2>
           ${trip.days.map(day => `
@@ -385,6 +392,64 @@ const app = {
     const icon = L.divIcon({ className: 'custom-marker marker-highlight', iconSize: [14, 14], iconAnchor: [7, 7] });
     L.marker([stop.lat, stop.lng], { icon }).addTo(map)
       .bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${L(stop.name)}</strong></div>`);
+  },
+
+  // ── Weather ─────────────────────────────────────────────
+  async fetchWeather(trip) {
+    if (!trip.map || !trip.map.center) return;
+    const [lat, lng] = trip.map.center;
+    const widget = document.getElementById('weather-widget');
+    if (!widget) return;
+
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&forecast_days=7`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (!data.daily) throw new Error('No data');
+      this.renderWeather(data.daily, widget);
+    } catch (err) {
+      widget.innerHTML = `<div class="weather-error">${currentLang === 'bg' ? 'Няма данни за времето' : 'Weather unavailable'}</div>`;
+    }
+  },
+
+  renderWeather(daily, widget) {
+    const days = daily.time;
+    const maxes = daily.temperature_2m_max;
+    const mins = daily.temperature_2m_min;
+    const codes = daily.weathercode;
+
+    const wmoIcons = {
+      0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
+      45: '🌫️', 48: '🌫️', 51: '🌦️', 53: '🌦️', 55: '🌧️',
+      61: '🌧️', 63: '🌧️', 65: '🌧️', 66: '🌧️', 67: '🌧️',
+      71: '🌨️', 73: '🌨️', 75: '🌨️', 77: '🌨️',
+      80: '🌦️', 81: '🌧️', 82: '🌧️',
+      85: '🌨️', 86: '🌨️', 95: '⛈️', 96: '⛈️', 99: '⛈️',
+    };
+
+    const dayNames = currentLang === 'bg'
+      ? ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
+      : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    const today = new Date().toISOString().split('T')[0];
+
+    let html = `<div class="weather-grid">`;
+    days.forEach((date, i) => {
+      const d = new Date(date + 'T12:00:00');
+      const dayName = date === today
+        ? (currentLang === 'bg' ? 'Днес' : 'Today')
+        : dayNames[d.getDay()];
+      const icon = wmoIcons[codes[i]] || '🌡️';
+      html += `
+        <div class="weather-day">
+          <span class="weather-day-name">${dayName}</span>
+          <span class="weather-icon">${icon}</span>
+          <span class="weather-temps">${Math.round(maxs[i])}° / ${Math.round(mins[i])}°</span>
+        </div>
+      `;
+    });
+    html += `</div>`;
+    widget.innerHTML = html;
   },
 
   // ── Lightbox ────────────────────────────────────────────

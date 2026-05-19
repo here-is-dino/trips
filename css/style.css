@@ -251,6 +251,55 @@ a:hover { text-decoration: underline; }
 .marker-highlight { background: var(--purple); }
 .marker-stop { background: var(--accent); }
 
+/* ── Weather Widget ─────────────────────────────────────── */
+.weather-widget {
+  margin-bottom: 40px;
+}
+.weather-grid {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.weather-grid::-webkit-scrollbar { display: none; }
+.weather-day {
+  flex: 0 0 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+}
+.weather-day-name {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.weather-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+.weather-temps {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--body);
+  white-space: nowrap;
+}
+.weather-loading,
+.weather-error {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 16px 0;
+  text-align: center;
+}
+
 /* ── Day by Day ────────────────────────────────────────── */
 .trip-days h2 {
   font-size: 13px;

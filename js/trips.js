@@ -204,7 +204,7 @@ const TRIPS = [
     id: 'rhodope-loop',
     slug: 'rhodope-loop',
     title: { en: 'Rhodope Loop — Dorkovo & Vacha Dam', bg: 'Родопски маршрут — Дорково и Въча язовир' },
-    dates: { start: '2025-06-20', end: '2025-06-21' },
+    dates: { start: '2026-05-20', end: '2026-05-21' },
     distance: '~340 km',
     status: 'planned',
     summary: {
@@ -325,7 +325,7 @@ const TRIPS = [
     days: [
       {
         day: 1,
-        date: '2025-06-20',
+        date: '2026-05-20',
         title: { en: 'Southbound — Gorge, Fortress & Dam', bg: 'На юг — Каньон, крепост и язовир' },
         distance: '~170 km',
         completed: false,
@@ -345,7 +345,7 @@ const TRIPS = [
       },
       {
         day: 2,
-        date: '2025-06-21',
+        date: '2026-05-21',
         title: { en: 'Northbound — Devin, Borino & Home', bg: 'На север — Девин, Борино и вкъщи' },
         distance: '~170 km',
         completed: false,
