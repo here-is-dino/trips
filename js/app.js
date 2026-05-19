@@ -452,7 +452,7 @@ const app = {
         <div class="weather-day">
           <span class="weather-day-name">${dayName}</span>
           <span class="weather-icon">${icon}</span>
-          <span class="weather-temps">${Math.round(maxs[i])}° / ${Math.round(mins[i])}°</span>
+          <span class="weather-temps">${Math.round(maxes[i])}° / ${Math.round(mins[i])}°</span>
         </div>
       `;
     });
