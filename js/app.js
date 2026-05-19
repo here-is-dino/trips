@@ -1,14 +1,37 @@
 // App router and page rendering
 const app = {
   currentPage: 'dashboard',
+  currentTripId: null,
 
   init() {
+    // Parse URL on load
+    this.parseUrl();
+    // Listen for browser back/forward
+    window.addEventListener('popstate', () => this.parseUrl());
+  },
+
+  parseUrl() {
+    const path = window.location.pathname;
+    const match = path.match(/^\/trip\/([a-z0-9-]+)\/?$/);
+    if (match) {
+      this.currentPage = 'trip';
+      this.currentTripId = match[1];
+    } else {
+      this.currentPage = 'dashboard';
+      this.currentTripId = null;
+    }
     this.render();
   },
 
   navigate(page, params = {}) {
     this.currentPage = page;
-    this.params = params;
+    if (page === 'trip' && params.id) {
+      this.currentTripId = params.id;
+      window.history.pushState({}, '', `/trip/${params.id}`);
+    } else {
+      this.currentTripId = null;
+      window.history.pushState({}, '', '/');
+    }
     this.render();
     window.scrollTo(0, 0);
   },
@@ -22,9 +45,8 @@ const app = {
         main.innerHTML = this.renderDashboard();
         break;
       case 'trip':
-        main.innerHTML = this.renderTrip(this.params.id);
-        // Init map after DOM is ready
-        requestAnimationFrame(() => this.initMap(this.params.id));
+        main.innerHTML = this.renderTrip(this.currentTripId);
+        requestAnimationFrame(() => this.initMap(this.currentTripId));
         break;
       default:
         main.innerHTML = this.renderDashboard();
@@ -42,7 +64,7 @@ const app = {
 
         <section class="trips-grid">
           ${trips.map(trip => `
-            <article class="trip-card" onclick="app.navigate('trip', {id: '${trip.id}'})">
+            <a href="/trip/${trip.id}" class="trip-card" onclick="app.navigate('trip', {id: '${trip.id}'}); return false;">
               <div class="trip-card-cover">
                 ${trip.coverImage
                   ? `<img src="${trip.coverImage}" alt="${trip.title}" loading="lazy">`
@@ -61,7 +83,7 @@ const app = {
                   ${trip.highlights.slice(0, 4).map(h => `<span class="highlight-tag">${h}</span>`).join('')}
                 </div>
               </div>
-            </article>
+            </a>
           `).join('')}
         </section>
 
@@ -74,12 +96,21 @@ const app = {
 
   renderTrip(id) {
     const trip = getTrip(id);
-    if (!trip) return `<p>Trip not found. <a href="#" onclick="app.navigate('dashboard')">Back home</a></p>`;
+    if (!trip) {
+      return `
+        <div class="page-trip" style="text-align:center;padding:80px 24px;">
+          <h1 style="font-size:48px;margin-bottom:16px;">🗺️</h1>
+          <h2 style="color:var(--ink);margin-bottom:8px;">Trip not found</h2>
+          <p style="color:var(--muted);margin-bottom:24px;">This trip doesn't exist or has been removed.</p>
+          <a href="/" onclick="app.navigate('dashboard'); return false;" class="back-link">← All trips</a>
+        </div>
+      `;
+    }
 
     return `
       <div class="page-trip">
         <nav class="trip-nav">
-          <a href="#" onclick="app.navigate('dashboard'); return false;" class="back-link">← All trips</a>
+          <a href="/" onclick="app.navigate('dashboard'); return false;" class="back-link">← All trips</a>
         </nav>
 
         <header class="trip-header">
@@ -195,7 +226,6 @@ const app = {
     const mapEl = document.getElementById('trip-map');
     if (!mapEl) return;
 
-    // Check if Leaflet is loaded
     if (typeof L === 'undefined') {
       mapEl.innerHTML = `
         <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);font-size:14px;text-align:center;padding:24px;">
@@ -210,15 +240,13 @@ const app = {
 
     const map = L.map('trip-map', {
       scrollWheelZoom: false,
-    }).setView(trip.map.route[0].lat ? [trip.map.route[0].lat, trip.map.route[0].lng] : trip.map.center, trip.map.zoom);
+    }).setView([trip.map.route[0].lat, trip.map.route[0].lng], trip.map.zoom);
 
-    // Clean minimal tiles — OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       maxZoom: 17,
     }).addTo(map);
 
-    // Route line
     L.polyline(routeCoords, {
       color: '#3d2f1e',
       weight: 3,
@@ -226,7 +254,6 @@ const app = {
       dashArray: '8, 6',
     }).addTo(map);
 
-    // Marker colors by type
     const markerColors = {
       start: '#2d8a4e',
       end: '#d94f4f',
@@ -235,7 +262,6 @@ const app = {
       stop: '#3d2f1e',
     };
 
-    // Add markers
     trip.map.route.forEach((stop, i) => {
       const color = markerColors[stop.type] || '#3d2f1e';
       const size = (stop.type === 'start' || stop.type === 'end') ? 14 : 10;
@@ -246,10 +272,8 @@ const app = {
         iconAnchor: [size / 2, size / 2],
       });
 
-      // Inline style for the marker color
       const marker = L.marker([stop.lat, stop.lng], { icon }).addTo(map);
 
-      // Popup
       marker.bindPopup(`
         <div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;">
           <strong>${i + 1}. ${stop.name}</strong><br>
@@ -258,7 +282,6 @@ const app = {
       `);
     });
 
-    // Fit bounds to show entire route
     const bounds = L.latLngBounds(routeCoords);
     map.fitBounds(bounds, { padding: [40, 40] });
   },
