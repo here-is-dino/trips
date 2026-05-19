@@ -65,6 +65,7 @@ const app = {
         break;
       case 'stop':
         main.innerHTML = this.renderStop(this.currentTripId, this.currentStopId);
+        requestAnimationFrame(() => this.initStopMap(this.currentTripId, this.currentStopId));
         break;
       default:
         main.innerHTML = this.renderDashboard();
@@ -158,8 +159,8 @@ const app = {
               </summary>
               <div class="day-content">
                 <ul class="schedule">
-                  ${day.schedule.map(item => `
-                    <li class="schedule-item${item.stopId ? ' has-stop' : ''}" ${item.stopId ? `onclick="app.navigate('stop', {tripId: '${trip.id}', stopId: '${item.stopId}'}); return false;"` : ''}>
+                  ${day.schedule.map((item, idx) => `
+                    <li class="schedule-item${item.stopId ? ' has-stop' : ''}" ${item.stopId ? `data-stop-id="${item.stopId}" data-trip-id="${trip.id}"` : ''}>
                       <span class="schedule-time">${item.time}</span>
                       <span class="schedule-icon">${item.icon}</span>
                       <span class="schedule-activity">${item.activity}</span>
@@ -366,6 +367,27 @@ const app = {
     map.fitBounds(L.latLngBounds(routeCoords), { padding: [40, 40] });
   },
 
+  // ── Stop Map ────────────────────────────────────────────
+  initStopMap(tripId, stopId) {
+    const stop = getStop(tripId, stopId);
+    if (!stop || !stop.lat || !stop.lng) return;
+    const mapEl = document.getElementById('stop-map');
+    if (!mapEl) return;
+    if (typeof L === 'undefined') return;
+
+    const map = L.map('stop-map', { scrollWheelZoom: false })
+      .setView([stop.lat, stop.lng], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 17,
+    }).addTo(map);
+
+    const icon = L.divIcon({ className: 'custom-marker marker-highlight', iconSize: [14, 14], iconAnchor: [7, 7] });
+    L.marker([stop.lat, stop.lng], { icon }).addTo(map)
+      .bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${stop.name}</strong></div>`);
+  },
+
   // ── Lightbox ────────────────────────────────────────────
   openLightbox(src) {
     const lb = document.getElementById('lightbox');
@@ -379,4 +401,17 @@ const app = {
 };
 
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') app.closeLightbox(); });
-document.addEventListener('DOMContentLoaded', () => app.init());
+document.addEventListener('DOMContentLoaded', () => {
+  app.init();
+  // Delegated click handler for stop links in schedule
+  document.addEventListener('click', (e) => {
+    const stopItem = e.target.closest('.schedule-item.has-stop');
+    if (stopItem) {
+      const tripId = stopItem.dataset.tripId;
+      const stopId = stopItem.dataset.stopId;
+      if (tripId && stopId) {
+        app.navigate('stop', { tripId, stopId });
+      }
+    }
+  });
+});
