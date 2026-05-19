@@ -376,7 +376,6 @@ a:hover { text-decoration: underline; }
 .trip-budget {
   margin-top: 48px;
 }
-.trip-packing h2,
 .trip-budget h2 {
   font-size: 13px;
   font-weight: 600;
@@ -390,6 +389,41 @@ a:hover { text-decoration: underline; }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 4px;
+  padding: 16px 0 4px;
+}
+.packing-header {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  user-select: none;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+}
+.packing-header::-webkit-details-marker { display: none; }
+.packing-header h2 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+.trip-packing[open] .packing-header {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: none;
+}
+.trip-packing .packing-list {
+  border: 1px solid var(--hairline);
+  border-top: none;
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  padding: 16px 20px;
+  background: var(--surface);
 }
 .packing-list li label {
   display: flex;

@@ -159,8 +159,11 @@ const app = {
         </section>
 
         ${trip.packing ? `
-          <section class="trip-packing">
-            <h2>Packing List</h2>
+          <details class="trip-packing" open>
+            <summary class="packing-header">
+              <h2>Packing List</h2>
+              <span class="day-toggle">▾</span>
+            </summary>
             <ul class="packing-list">
               ${trip.packing.map((item, i) => `
                 <li>
@@ -171,7 +174,7 @@ const app = {
                 </li>
               `).join('')}
             </ul>
-          </section>
+          </details>
         ` : ''}
 
         ${trip.budget ? `
