@@ -59,11 +59,13 @@ const app = {
         break;
       case 'trip':
         main.innerHTML = this.renderTrip(this.currentTripId);
-        requestAnimationFrame(() => this.initMap(this.currentTripId));
         requestAnimationFrame(() => {
+          this.initMap(this.currentTripId);
+        });
+        setTimeout(() => {
           const trip = getTrip(this.currentTripId);
           if (trip) this.fetchWeather(trip);
-        });
+        }, 100);
         break;
       case 'stop':
         main.innerHTML = this.renderStop(this.currentTripId, this.currentStopId);
