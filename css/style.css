@@ -93,40 +93,6 @@ a:hover { text-decoration: underline; }
   opacity: 0.7;
 }
 
-/* ── Day Weather Badge ──────────────────────────────────── */
-.day-weather {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-left: auto;
-  padding: 3px 8px;
-  background: var(--canvas);
-  border: 1px solid var(--hairline);
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 12px;
-  white-space: nowrap;
-  transition: background 0.15s ease, border-color 0.15s ease;
-  flex-shrink: 0;
-}
-.day-weather:hover {
-  background: #f5f0e0;
-  border-color: var(--accent);
-}
-.day-weather-icon {
-  font-size: 16px;
-  line-height: 1;
-}
-.day-weather-temp {
-  font-weight: 600;
-  color: var(--body);
-  font-size: 11px;
-}
-.day-weather.loading {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
 /* ── Hourly Weather Popup ───────────────────────────────── */
 .weather-popup-overlay {
   display: none;
@@ -429,11 +395,19 @@ a:hover { text-decoration: underline; }
   margin-bottom: 48px;
   overflow: hidden;
   border: 1px solid var(--hairline);
+  min-height: 250px;
 }
 .trip-map .leaflet-container {
   width: 100%;
   height: 100%;
   font-family: Inter, -apple-system, sans-serif;
+}
+/* Hide Leaflet Routing Machine itinerary panel */
+.leaflet-routing-container {
+  display: none !important;
+}
+.leaflet-routing-collapse-btn {
+  display: none !important;
 }
 /* Minimal marker style */
 .custom-marker {
@@ -471,6 +445,11 @@ a:hover { text-decoration: underline; }
   background: var(--surface);
   border: 1px solid var(--hairline);
   border-radius: 10px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.weather-day:hover {
+  background: #f5f0e0;
+  border-color: var(--accent);
 }
 .weather-day.weather-today {
   border-color: var(--accent);
@@ -535,6 +514,7 @@ a:hover { text-decoration: underline; }
   gap: 12px;
   padding: 16px 20px;
   user-select: none;
+  flex-wrap: wrap;
 }
 .day-title-block {
   display: flex;
@@ -565,6 +545,11 @@ a:hover { text-decoration: underline; }
 .day-info {
   flex: 1;
   min-width: 0;
+  order: 3;
+  width: 100%;
+  padding-top: 8px;
+  border-top: 1px solid var(--hairline);
+  margin-top: 4px;
 }
 .day-title {
   display: block;
@@ -579,12 +564,68 @@ a:hover { text-decoration: underline; }
   font-size: 12px;
   color: var(--muted);
 }
+.day-weather {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  flex-shrink: 0;
+  order: 2;
+}
+.day-weather:hover {
+  background: #f5f0e0;
+  border-color: var(--accent);
+}
+.day-weather-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+.day-weather-temp {
+  font-weight: 600;
+  color: var(--body);
+  font-size: 11px;
+}
+.day-weather.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
 .day-toggle {
   font-size: 14px;
   color: var(--muted);
   transition: transform 0.3s ease;
+  order: 4;
+  margin-left: auto;
 }
 .day-card[open] .day-toggle { transform: rotate(180deg); }
+
+/* Desktop: single row layout */
+@media (min-width: 641px) {
+  .day-header {
+    flex-wrap: nowrap;
+  }
+  .day-info {
+    order: 0;
+    width: auto;
+    padding-top: 0;
+    border-top: none;
+    margin-top: 0;
+  }
+  .day-weather {
+    order: 0;
+    margin-left: auto;
+  }
+  .day-toggle {
+    order: 0;
+    margin-left: 0;
+  }
+}
 
 .day-content {
   padding: 0 20px 20px;

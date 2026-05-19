@@ -395,26 +395,66 @@ const app = {
     if (!mapEl) return;
     if (typeof L === 'undefined') return;
 
-    const routeCoords = trip.map.route.map(s => [s.lat, s.lng]);
+    const routeStops = trip.map.route;
+    const waypoints = routeStops.map(s => L.latLng(s.lat, s.lng));
+
     const map = L.map('trip-map', { scrollWheelZoom: false })
-      .setView([trip.map.route[0].lat, trip.map.route[0].lng], trip.map.zoom);
+      .setView([routeStops[0].lat, routeStops[0].lng], trip.map.zoom);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       maxZoom: 17,
     }).addTo(map);
 
-    L.polyline(routeCoords, { color: '#3d2f1e', weight: 3, opacity: 0.8, dashArray: '8, 6' }).addTo(map);
+    // Use Leaflet Routing Machine with OSRM for road routes
+    if (typeof L.Routing !== 'undefined') {
+      const routingControl = L.Routing.control({
+        waypoints: waypoints,
+        routeWhileDragging: false,
+        addWaypoints: false,
+        fitSelectedRoutes: true,
+        showAlternatives: false,
+        lineOptions: [
+          { styles: [{ color: '#3d2f1e', weight: 4, opacity: 0.9 }] },
+          { styles: [{ color: '#3d2f1e', weight: 2, opacity: 0.6, dashArray: '6, 4' }] }
+        ],
+        createMarker: function(i, waypoint, n) {
+          const stop = routeStops[i];
+          const color = { start: '#2d8a4e', end: '#d94f4f', camp: '#e67e22', highlight: '#8b5cf6', stop: '#3d2f1e' }[stop.type] || '#3d2f1e';
+          const size = (stop.type === 'start' || stop.type === 'end') ? 14 : 10;
+          const marker = L.marker(waypoint.latLng, {
+            icon: L.divIcon({
+              className: 'custom-marker marker-' + stop.type,
+              iconSize: [size, size],
+              iconAnchor: [size / 2, size / 2]
+            }),
+            draggable: false
+          });
+          marker.bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${i + 1}. ${L(stop.name)}</strong><br><span style="color:#6a6a6a;">${L(stop.label)}</span></div>`);
+          return marker;
+        },
+        show: false, // hide the itinerary panel
+        collapsible: true,
+      }).addTo(map);
 
-    trip.map.route.forEach((stop, i) => {
-      const color = { start: '#2d8a4e', end: '#d94f4f', camp: '#e67e22', highlight: '#8b5cf6', stop: '#3d2f1e' }[stop.type] || '#3d2f1e';
-      const size = (stop.type === 'start' || stop.type === 'end') ? 14 : 10;
-      const icon = L.divIcon({ className: 'custom-marker marker-' + stop.type, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
-      L.marker([stop.lat, stop.lng], { icon }).addTo(map)
-        .bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${i + 1}. ${L(stop.name)}</strong><br><span style="color:#6a6a6a;">${L(stop.label)}</span></div>`);
-    });
-
-    map.fitBounds(L.latLngBounds(routeCoords), { padding: [40, 40] });
+      // Hide the routing container (itinerary panel)
+      setTimeout(() => {
+        const container = document.querySelector('.leaflet-routing-container');
+        if (container) container.style.display = 'none';
+      }, 500);
+    } else {
+      // Fallback: straight lines if LRM not loaded
+      const routeCoords = routeStops.map(s => [s.lat, s.lng]);
+      L.polyline(routeCoords, { color: '#3d2f1e', weight: 3, opacity: 0.8, dashArray: '8, 6' }).addTo(map);
+      routeStops.forEach((stop, i) => {
+        const color = { start: '#2d8a4e', end: '#d94f4f', camp: '#e67e22', highlight: '#8b5cf6', stop: '#3d2f1e' }[stop.type] || '#3d2f1e';
+        const size = (stop.type === 'start' || stop.type === 'end') ? 14 : 10;
+        const icon = L.divIcon({ className: 'custom-marker marker-' + stop.type, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
+        L.marker([stop.lat, stop.lng], { icon }).addTo(map)
+          .bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${i + 1}. ${L(stop.name)}</strong><br><span style="color:#6a6a6a;">${L(stop.label)}</span></div>`);
+      });
+      map.fitBounds(L.latLngBounds(routeCoords), { padding: [40, 40] });
+    }
   },
 
   // ── Stop Map ────────────────────────────────────────────
@@ -511,8 +551,15 @@ const app = {
 
     const today = new Date().toISOString().split('T')[0];
 
+    // Get trip date range for filtering
+    const trip = this.currentTripId ? getTrip(this.currentTripId) : null;
+    const tripDates = trip ? trip.days.map(d => d.date) : null;
+
     let html = `<div class="weather-grid">`;
     days.forEach((date, i) => {
+      // Only show days that are part of the trip
+      if (tripDates && !tripDates.includes(date)) return;
+
       const d = new Date(date + 'T12:00:00');
       const isToday = date === today;
       const dayName = isToday
@@ -521,7 +568,9 @@ const app = {
       const dateLabel = `${d.getDate()} ${monthNames[d.getMonth()]}`;
       const icon = wmoIcon(codes[i]);
       html += `
-        <div class="weather-day${isToday ? ' weather-today' : ''}">
+        <div class="weather-day${isToday ? ' weather-today' : ''}"
+             onclick="app.openWeatherPopup('${date}', '${this.currentTripId}', event)"
+             style="cursor:pointer;">
           <span class="weather-day-name">${dayName}</span>
           <span class="weather-date">${dateLabel}</span>
           <span class="weather-icon">${icon}</span>
@@ -570,22 +619,27 @@ const app = {
       `;
     }).join('');
 
-    // Build hourly rows
-    const hourlyHtml = dayIndices.map(i => {
-      const timeStr = hTime[i].split('T')[1];
-      const icon = wmoIcon(hCode[i]);
-      return `
-        <div class="weather-popup-hour">
-          <div class="weather-popup-hour-time">${timeStr}</div>
-          <div class="weather-popup-hour-icon">${icon}</div>
-          <div class="weather-popup-hour-temp">${Math.round(hTemp[i])}°</div>
-          <div class="weather-popup-hour-detail">
-            <span>💧 ${hPrecip[i]}%</span>
-            <span>💨 ${Math.round(hWind[i])} km/h</span>
+    // Build hourly rows — only show 7am to midnight
+    const hourlyHtml = dayIndices
+      .filter(i => {
+        const hour = parseInt(hTime[i].split('T')[1].split(':')[0]);
+        return hour >= 7;
+      })
+      .map(i => {
+        const timeStr = hTime[i].split('T')[1];
+        const icon = wmoIcon(hCode[i]);
+        return `
+          <div class="weather-popup-hour">
+            <div class="weather-popup-hour-time">${timeStr}</div>
+            <div class="weather-popup-hour-icon">${icon}</div>
+            <div class="weather-popup-hour-temp">${Math.round(hTemp[i])}°</div>
+            <div class="weather-popup-hour-detail">
+              <span>💧 ${hPrecip[i]}%</span>
+              <span>💨 ${Math.round(hWind[i])} km/h</span>
+            </div>
           </div>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
 
     const dateObj = new Date(dateStr + 'T12:00:00');
     const dateFormatted = dateObj.toLocaleDateString(currentLang === 'bg' ? 'bg-BG' : 'en-US', {
