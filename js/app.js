@@ -11,14 +11,12 @@ const app = {
 
   parseUrl() {
     const path = window.location.pathname;
-    // Match /trip/:tripId/stop/:stopId
     const stopMatch = path.match(/^\/trip\/([a-z0-9-]+)\/stop\/([a-z0-9-]+)\/?$/);
     if (stopMatch) {
       this.currentPage = 'stop';
       this.currentTripId = stopMatch[1];
       this.currentStopId = stopMatch[2];
     } else {
-      // Match /trip/:tripId
       const tripMatch = path.match(/^\/trip\/([a-z0-9-]+)\/?$/);
       if (tripMatch) {
         this.currentPage = 'trip';
@@ -78,35 +76,35 @@ const app = {
     return `
       <div class="page-dashboard">
         <header class="site-header">
-          <h1>Family Travels</h1>
-          <p class="subtitle">Dino, Joshi, Bourya, Clement & Archie — on the road in the VW T3</p>
+          <h1>${t('siteTitle')}</h1>
+          <p class="subtitle">${t('siteSubtitle')}</p>
         </header>
         <section class="trips-grid">
           ${trips.map(trip => `
             <a href="/trip/${trip.id}" class="trip-card" onclick="app.navigate('trip', {id: '${trip.id}'}); return false;">
               <div class="trip-card-cover">
                 ${trip.coverImage
-                  ? `<img src="${trip.coverImage}" alt="${trip.title}" loading="lazy">`
-                  : `<div class="trip-card-placeholder"><span>${trip.title.charAt(0)}</span></div>`
+                  ? `<img src="${trip.coverImage}" alt="${L(trip.title)}" loading="lazy">`
+                  : `<div class="trip-card-placeholder"><span>${L(trip.title).charAt(0)}</span></div>`
                 }
                 <span class="trip-status status-${trip.status}">${getStatusLabel(trip.status)}</span>
               </div>
               <div class="trip-card-body">
-                <h2>${trip.title}</h2>
+                <h2>${L(trip.title)}</h2>
                 <p class="trip-meta">
                   <span>📅 ${formatDate(trip.dates.start)} — ${formatDate(trip.dates.end)}</span>
                   <span>📍 ${trip.distance}</span>
                 </p>
-                <p class="trip-summary">${trip.summary}</p>
+                <p class="trip-summary">${L(trip.summary)}</p>
                 <div class="trip-highlights">
-                  ${trip.highlights.slice(0, 4).map(h => `<span class="highlight-tag">${h}</span>`).join('')}
+                  ${(currentLang === 'bg' ? trip.highlights.bg : trip.highlights.en).slice(0, 4).map(h => `<span class="highlight-tag">${h}</span>`).join('')}
                 </div>
               </div>
             </a>
           `).join('')}
         </section>
         <footer class="site-footer">
-          <p>VW T3 Westfalia Syncro · Bulgaria & beyond · Est. 2025</p>
+          <p>${t('footer')}</p>
         </footer>
       </div>
     `;
@@ -119,56 +117,58 @@ const app = {
       return `
         <div class="page-trip" style="text-align:center;padding:80px 24px;">
           <h1 style="font-size:48px;margin-bottom:16px;">🗺️</h1>
-          <h2 style="color:var(--ink);margin-bottom:8px;">Trip not found</h2>
-          <p style="color:var(--muted);margin-bottom:24px;">This trip doesn't exist or has been removed.</p>
-          <a href="/" onclick="app.navigate('dashboard'); return false;" class="back-link">← All trips</a>
+          <h2 style="color:var(--ink);margin-bottom:8px;">${t('tripNotFound')}</h2>
+          <p style="color:var(--muted);margin-bottom:24px;">${t('tripNotFoundMsg')}</p>
+          <a href="/" onclick="app.navigate('dashboard'); return false;" class="back-link">← ${t('allTrips')}</a>
         </div>
       `;
     }
 
+    const budgetEntries = Object.entries(trip.budget).filter(([k]) => k !== 'currency' && k !== 'total');
+
     return `
       <div class="page-trip">
         <nav class="trip-nav">
-          <a href="/" onclick="app.navigate('dashboard'); return false;" class="back-link">← All trips</a>
+          <a href="/" onclick="app.navigate('dashboard'); return false;" class="back-link">← ${t('allTrips')}</a>
         </nav>
         <header class="trip-header">
           <span class="trip-status status-${trip.status}">${getStatusLabel(trip.status)}</span>
-          <h1>${trip.title}</h1>
+          <h1>${L(trip.title)}</h1>
           <p class="trip-meta">
             <span>📅 ${formatDate(trip.dates.start)} — ${formatDate(trip.dates.end)}</span>
             <span>📍 ${trip.distance}</span>
             <span>🚐 ${trip.vehicle}</span>
           </p>
-          <p class="trip-summary">${trip.summary}</p>
+          <p class="trip-summary">${L(trip.summary)}</p>
         </header>
         <div class="trip-map" id="trip-map"></div>
         <section class="trip-days">
-          <h2>Day by Day</h2>
+          <h2>${t('dayByDay')}</h2>
           ${trip.days.map(day => `
             <details class="day-card" ${day.day === 1 ? 'open' : ''}>
               <summary class="day-header">
                 <div class="day-title-block">
-                  <span class="day-number">Day ${day.day}</span>
+                  <span class="day-number">${t('dayByDay').split(' ')[0]} ${day.day}</span>
                   <span class="day-date">${formatDate(day.date)}</span>
                 </div>
                 <div class="day-info">
-                  <span class="day-title">${day.title}</span>
+                  <span class="day-title">${L(day.title)}</span>
                   <span class="day-distance">${day.distance}</span>
                 </div>
                 <span class="day-toggle">▾</span>
               </summary>
               <div class="day-content">
                 <ul class="schedule">
-                  ${day.schedule.map((item, idx) => `
+                  ${day.schedule.map((item) => `
                     <li class="schedule-item${item.stopId ? ' has-stop' : ''}" ${item.stopId ? `data-stop-id="${item.stopId}" data-trip-id="${trip.id}"` : ''}>
                       <span class="schedule-time">${item.time}</span>
                       <span class="schedule-icon">${item.icon}</span>
-                      <span class="schedule-activity">${item.activity}</span>
+                      <span class="schedule-activity">${L(item.activity)}</span>
                       ${item.stopId ? '<span class="stop-link-icon">→</span>' : ''}
                     </li>
                   `).join('')}
                 </ul>
-                ${day.notes ? `<p class="day-notes">💡 ${day.notes}</p>` : ''}
+                ${day.notes ? `<p class="day-notes">💡 ${L(day.notes)}</p>` : ''}
                 ${day.gallery && day.gallery.length > 0 ? this.renderGallery(day.gallery) : ''}
               </div>
             </details>
@@ -178,11 +178,11 @@ const app = {
         ${trip.packing ? `
           <details class="trip-packing" open>
             <summary class="packing-header">
-              <h2>Packing List</h2>
+              <h2>${t('packingList')}</h2>
               <span class="day-toggle">▾</span>
             </summary>
             <ul class="packing-list">
-              ${trip.packing.map((item) => `
+              ${(currentLang === 'bg' ? trip.packing.bg : trip.packing.en).map((item) => `
                 <li>
                   <label>
                     <input type="checkbox" onchange="this.closest('li').classList.toggle('checked', this.checked)">
@@ -196,16 +196,16 @@ const app = {
 
         ${trip.budget ? `
           <section class="trip-budget">
-            <h2>Estimated Budget</h2>
+            <h2>${t('estimatedBudget')}</h2>
             <div class="budget-grid">
-              ${Object.entries(trip.budget).filter(([k]) => k !== 'currency' && k !== 'total').map(([k, v]) => `
+              ${budgetEntries.map(([k, v]) => `
                 <div class="budget-item">
-                  <span class="budget-label">${k.charAt(0).toUpperCase() + k.slice(1)}</span>
+                  <span class="budget-label">${t(k) || k.charAt(0).toUpperCase() + k.slice(1)}</span>
                   <span class="budget-value">${v} ${trip.budget.currency}</span>
                 </div>
               `).join('')}
               <div class="budget-item budget-total">
-                <span class="budget-label">Total</span>
+                <span class="budget-label">${t('total')}</span>
                 <span class="budget-value">${trip.budget.total}</span>
               </div>
             </div>
@@ -213,7 +213,7 @@ const app = {
         ` : ''}
 
         <footer class="site-footer">
-          <p>VW T3 Westfalia Syncro · Bulgaria & beyond · Est. 2025</p>
+          <p>${t('footer')}</p>
         </footer>
       </div>
       <div class="lightbox" id="lightbox" onclick="app.closeLightbox()">
@@ -231,9 +231,9 @@ const app = {
       return `
         <div class="page-trip" style="text-align:center;padding:80px 24px;">
           <h1 style="font-size:48px;margin-bottom:16px;">📍</h1>
-          <h2 style="color:var(--ink);margin-bottom:8px;">Stop not found</h2>
-          <p style="color:var(--muted);margin-bottom:24px;">This stop doesn't exist or has been removed.</p>
-          <a href="/trip/${tripId}" onclick="app.navigate('trip', {id: '${tripId}'}); return false;" class="back-link">← Back to trip</a>
+          <h2 style="color:var(--ink);margin-bottom:8px;">${t('stopNotFound')}</h2>
+          <p style="color:var(--muted);margin-bottom:24px;">${t('stopNotFoundMsg')}</p>
+          <a href="/trip/${tripId}" onclick="app.navigate('trip', {id: '${tripId}'}); return false;" class="back-link">← ${t('backToTrip', {trip: L(trip?.title || '')})}</a>
         </div>
       `;
     }
@@ -241,25 +241,25 @@ const app = {
     return `
       <div class="page-trip">
         <nav class="trip-nav">
-          <a href="/trip/${tripId}" onclick="app.navigate('trip', {id: '${tripId}'}); return false;" class="back-link">← ${trip.title}</a>
+          <a href="/trip/${tripId}" onclick="app.navigate('trip', {id: '${tripId}'}); return false;" class="back-link">← ${L(trip.title)}</a>
         </nav>
 
         <header class="stop-header">
-          ${stop.image ? `<img src="${stop.image}" alt="${stop.name}" class="stop-hero-image">` : ''}
-          <h1>${stop.name}</h1>
-          <p class="stop-subtitle">${stop.subtitle}</p>
+          ${stop.image ? `<img src="${stop.image}" alt="${L(stop.name)}" class="stop-hero-image">` : ''}
+          <h1>${L(stop.name)}</h1>
+          <p class="stop-subtitle">${L(stop.subtitle)}</p>
         </header>
 
         <div class="stop-content">
-          <p class="stop-description">${stop.description}</p>
+          <p class="stop-description">${L(stop.description)}</p>
 
           <div class="stop-meta-grid">
             ${stop.duration ? `
               <div class="stop-meta-item">
                 <span class="stop-meta-icon">⏱️</span>
                 <div>
-                  <span class="stop-meta-label">Duration</span>
-                  <span class="stop-meta-value">${stop.duration}</span>
+                  <span class="stop-meta-label">${t('duration')}</span>
+                  <span class="stop-meta-value">${L(stop.duration)}</span>
                 </div>
               </div>
             ` : ''}
@@ -267,49 +267,49 @@ const app = {
               <div class="stop-meta-item">
                 <span class="stop-meta-icon">🕐</span>
                 <div>
-                  <span class="stop-meta-label">Best time</span>
-                  <span class="stop-meta-value">${stop.bestTime}</span>
+                  <span class="stop-meta-label">${t('bestTime')}</span>
+                  <span class="stop-meta-value">${L(stop.bestTime)}</span>
                 </div>
               </div>
             ` : ''}
             <div class="stop-meta-item">
               <span class="stop-meta-icon">${stop.kidFriendly ? '👶' : '🚫'}</span>
               <div>
-                <span class="stop-meta-label">Kid-friendly</span>
-                <span class="stop-meta-value">${stop.kidFriendly ? 'Yes' : 'No'}</span>
+                <span class="stop-meta-label">${t('kidFriendly')}</span>
+                <span class="stop-meta-value">${stop.kidFriendly ? t('yes') : t('no')}</span>
               </div>
             </div>
             <div class="stop-meta-item">
               <span class="stop-meta-icon">${stop.dogFriendly ? '🐕' : '🚫'}</span>
               <div>
-                <span class="stop-meta-label">Dog-friendly</span>
-                <span class="stop-meta-value">${stop.dogFriendly ? 'Yes' : 'No'}</span>
+                <span class="stop-meta-label">${t('dogFriendly')}</span>
+                <span class="stop-meta-value">${stop.dogFriendly ? t('yes') : t('no')}</span>
               </div>
             </div>
             ${stop.accessibility ? `
               <div class="stop-meta-item stop-meta-full">
                 <span class="stop-meta-icon">♿</span>
                 <div>
-                  <span class="stop-meta-label">Accessibility</span>
-                  <span class="stop-meta-value">${stop.accessibility}</span>
+                  <span class="stop-meta-label">${t('accessibility')}</span>
+                  <span class="stop-meta-value">${L(stop.accessibility)}</span>
                 </div>
               </div>
             ` : ''}
           </div>
 
-          ${stop.highlights && stop.highlights.length > 0 ? `
+          ${stop.highlights && ((currentLang === 'bg' ? stop.highlights.bg : stop.highlights.en) || []).length > 0 ? `
             <section class="stop-section">
-              <h2>Highlights</h2>
+              <h2>${t('highlights')}</h2>
               <ul class="stop-highlights">
-                ${stop.highlights.map(h => `<li>${h}</li>`).join('')}
+                ${(currentLang === 'bg' ? stop.highlights.bg : stop.highlights.en).map(h => `<li>${h}</li>`).join('')}
               </ul>
             </section>
           ` : ''}
 
           ${stop.tips ? `
             <section class="stop-section">
-              <h2>Tips</h2>
-              <p class="stop-tips">💡 ${stop.tips}</p>
+              <h2>${t('tips')}</h2>
+              <p class="stop-tips">💡 ${L(stop.tips)}</p>
             </section>
           ` : ''}
 
@@ -317,7 +317,7 @@ const app = {
         </div>
 
         <footer class="site-footer">
-          <p>VW T3 Westfalia Syncro · Bulgaria & beyond · Est. 2025</p>
+          <p>${t('footer')}</p>
         </footer>
       </div>
     `;
@@ -355,13 +355,12 @@ const app = {
 
     L.polyline(routeCoords, { color: '#3d2f1e', weight: 3, opacity: 0.8, dashArray: '8, 6' }).addTo(map);
 
-    const markerColors = { start: '#2d8a4e', end: '#d94f4f', camp: '#e67e22', highlight: '#8b5cf6', stop: '#3d2f1e' };
     trip.map.route.forEach((stop, i) => {
-      const color = markerColors[stop.type] || '#3d2f1e';
+      const color = { start: '#2d8a4e', end: '#d94f4f', camp: '#e67e22', highlight: '#8b5cf6', stop: '#3d2f1e' }[stop.type] || '#3d2f1e';
       const size = (stop.type === 'start' || stop.type === 'end') ? 14 : 10;
       const icon = L.divIcon({ className: 'custom-marker marker-' + stop.type, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
       L.marker([stop.lat, stop.lng], { icon }).addTo(map)
-        .bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${i + 1}. ${stop.name}</strong><br><span style="color:#6a6a6a;">${stop.label}</span></div>`);
+        .bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${i + 1}. ${L(stop.name)}</strong><br><span style="color:#6a6a6a;">${L(stop.label)}</span></div>`);
     });
 
     map.fitBounds(L.latLngBounds(routeCoords), { padding: [40, 40] });
@@ -385,7 +384,7 @@ const app = {
 
     const icon = L.divIcon({ className: 'custom-marker marker-highlight', iconSize: [14, 14], iconAnchor: [7, 7] });
     L.marker([stop.lat, stop.lng], { icon }).addTo(map)
-      .bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${stop.name}</strong></div>`);
+      .bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${L(stop.name)}</strong></div>`);
   },
 
   // ── Lightbox ────────────────────────────────────────────
