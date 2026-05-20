@@ -400,42 +400,67 @@ const app = {
     const img = document.getElementById('stop-image-pan-img');
     if (!container || !img) return;
 
-    // Wait for image to load to know its natural width
     const setupPan = () => {
       const containerWidth = container.offsetWidth;
-      const imgWidth = img.naturalWidth || img.width;
-      // The CSS makes img height:100%, so compute actual rendered width
       const renderedWidth = img.offsetWidth;
       const maxPan = Math.max(0, renderedWidth - containerWidth);
 
-      if (maxPan <= 0) return; // no overflow, no need to pan
+      if (maxPan <= 0) return;
 
+      // State
+      let currentPan = -maxPan; // start from rightmost
       let startX = 0;
       let startPan = 0;
-      let currentPan = -maxPan; // start from rightmost position
       let isDragging = false;
-      let autoPanTimer = null;
-
-      // Disable CSS animation while user interacts
-      const stopAutoPan = () => {
-        img.style.animation = 'none';
-        img.style.transition = 'none';
-        if (autoPanTimer) clearTimeout(autoPanTimer);
-      };
+      let autoPanDir = -1; // -1 = moving left (toward 0), +1 = moving right (toward -maxPan)
+      let autoPanRAF = null;
+      let lastTimestamp = 0;
+      const speed = 30; // pixels per second
 
       const setPan = (px) => {
         currentPan = Math.max(-maxPan, Math.min(0, px));
         img.style.transform = `translateX(${currentPan}px)`;
       };
 
+      // Auto-pan loop
+      const autoPan = (timestamp) => {
+        if (isDragging) {
+          lastTimestamp = timestamp;
+          autoPanRAF = requestAnimationFrame(autoPan);
+          return;
+        }
+
+        if (!lastTimestamp) lastTimestamp = timestamp;
+        const dt = (timestamp - lastTimestamp) / 1000; // seconds
+        lastTimestamp = timestamp;
+
+        const delta = autoPanDir * speed * dt;
+        let next = currentPan + delta;
+
+        // Bounce at edges
+        if (next >= 0) {
+          next = 0;
+          autoPanDir = -1; // reverse: now go left
+        } else if (next <= -maxPan) {
+          next = -maxPan;
+          autoPanDir = +1; // reverse: now go right
+        }
+
+        setPan(next);
+        autoPanRAF = requestAnimationFrame(autoPan);
+      };
+
+      // Start auto-pan from rightmost, initially moving left
+      setPan(-maxPan);
+      autoPanDir = -1;
+      lastTimestamp = 0;
+      autoPanRAF = requestAnimationFrame(autoPan);
+
       // Touch events
       container.addEventListener('touchstart', (e) => {
         isDragging = true;
-        stopAutoPan();
         startX = e.touches[0].clientX;
         startPan = currentPan;
-        // Also stop the CSS animation
-        img.style.animationPlayState = 'paused';
       }, { passive: true });
 
       container.addEventListener('touchmove', (e) => {
@@ -446,15 +471,20 @@ const app = {
 
       container.addEventListener('touchend', () => {
         isDragging = false;
+        // Determine new direction based on where user left it
+        // If in the right half, go left next; if in the left half, go right next
+        if (currentPan < -maxPan / 2) {
+          autoPanDir = -1; // closer to right edge → move left
+        } else {
+          autoPanDir = +1; // closer to left edge → move right
+        }
       }, { passive: true });
 
-      // Mouse events (for desktop testing)
+      // Mouse events (desktop)
       container.addEventListener('mousedown', (e) => {
         isDragging = true;
-        stopAutoPan();
         startX = e.clientX;
         startPan = currentPan;
-        img.style.animationPlayState = 'paused';
         e.preventDefault();
       });
 
@@ -466,6 +496,11 @@ const app = {
 
       document.addEventListener('mouseup', () => {
         isDragging = false;
+        if (currentPan < -maxPan / 2) {
+          autoPanDir = -1;
+        } else {
+          autoPanDir = +1;
+        }
       });
     };
 

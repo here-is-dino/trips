@@ -840,12 +840,7 @@ a:hover { text-decoration: underline; }
   width: auto;
   max-width: none;
   min-width: 100%;
-  animation: panRightLeft 18s ease-in-out infinite alternate;
   will-change: transform;
-}
-@keyframes panRightLeft {
-  0%   { transform: translateX(-25%); }
-  100% { transform: translateX(0); }
 }
 
 .stop-meta-grid {
