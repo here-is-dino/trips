@@ -422,16 +422,20 @@ a:hover { text-decoration: underline; }
   margin-bottom: 40px;
   display: flex;
   justify-content: center;
+  margin-left: -24px;
+  margin-right: -24px;
+  width: calc(100% + 48px);
 }
 .weather-grid {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding: 4px 0 8px;
+  padding: 4px 24px 8px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   justify-content: center;
   flex-wrap: nowrap;
+  max-width: 100%;
 }
 .weather-grid::-webkit-scrollbar { display: none; }
 .weather-day {
