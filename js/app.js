@@ -85,9 +85,10 @@ const app = {
         break;
       case 'trip':
         main.innerHTML = this.renderTrip(this.currentTripId);
-        requestAnimationFrame(() => {
+        // Small delay to let the DOM settle before initializing the map
+        setTimeout(() => {
           this.initMap(this.currentTripId);
-        });
+        }, 50);
         setTimeout(() => {
           const trip = getTrip(this.currentTripId);
           if (trip) this.fetchWeather(trip);
@@ -410,11 +411,22 @@ const app = {
 
     const routeStops = trip.map.route;
 
-    const map = L.map('trip-map', { scrollWheelZoom: false })
-      .setView([routeStops[0].lat, routeStops[0].lng], trip.map.zoom);
+    // Destroy existing map on this element if any
+    const existing = mapEl._leaflet_map;
+    if (existing) existing.remove();
+
+    const map = L.map('trip-map', {
+      scrollWheelZoom: false,
+      zoomControl: false,
+    }).setView([routeStops[0].lat, routeStops[0].lng], trip.map.zoom);
+
+    // Add zoom control to bottom-right on desktop
+    if (window.innerWidth > 640) {
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+    }
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
       maxZoom: 17,
     }).addTo(map);
 
@@ -431,12 +443,18 @@ const app = {
         .bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${i + 1}. ${L(stop.name)}</strong><br><span style="color:#6a6a6a;">${L(stop.label)}</span></div>`);
     });
 
-    // Fit bounds to show all markers
+    // Fit bounds
     map.fitBounds(L.latLngBounds(routeCoords), { padding: [40, 40] });
 
-    // Fix rendering — invalidateSize after container is in DOM
-    setTimeout(() => map.invalidateSize(), 100);
-    setTimeout(() => map.invalidateSize(), 500);
+    // Store reference for cleanup
+    mapEl._leaflet_map = map;
+
+    // Multiple invalidateSize calls for mobile rendering
+    requestAnimationFrame(() => {
+      map.invalidateSize();
+      setTimeout(() => map.invalidateSize(), 200);
+      setTimeout(() => map.invalidateSize(), 600);
+    });
   },
 
   // ── Stop Map ────────────────────────────────────────────
