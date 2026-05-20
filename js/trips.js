@@ -54,7 +54,7 @@ const TRIPS = [
         accessibility: { en: 'Not stroller-friendly — steep clay path', bg: 'Не е подходящо за количка — стръмен глинен път' },
         bestTime: { en: 'Morning (9-11am)', bg: 'Сутрин (9-11ч)' },
         duration: { en: '1-1.5 hours', bg: '1-1.5 часа' },
-        mapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.108,24.318',
+        mapsUrl: 'https://www.google.com/maps/place/?cid=16916342825332376007',
       },
       'vacha-dam': {
         name: { en: 'Vacha Dam', bg: 'Язовир Въча' },
@@ -77,7 +77,7 @@ const TRIPS = [
         accessibility: { en: 'Partial — viewpoint is accessible, rocks are not', bg: 'Частична — гледката е достъпна, камъните не' },
         bestTime: { en: 'Midday for best light in the gorge', bg: 'Обяд за най-добра светлина в каньона' },
         duration: { en: '45 min - 1 hour', bg: '45 мин - 1 час' },
-        mapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.135,24.455',
+        mapsUrl: 'https://www.google.com/maps/place/?cid=17211587667899355621',
       },
       'devin': {
         name: { en: 'Devin', bg: 'Девин' },
@@ -100,7 +100,7 @@ const TRIPS = [
         accessibility: { en: 'Fully stroller-friendly', bg: 'Напълно подходящо за количка' },
         bestTime: { en: 'Mid-morning (10am-12pm)', bg: 'Следобед (10-12ч)' },
         duration: { en: '30-45 min', bg: '30-45 мин' },
-        mapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.740,24.400',
+        mapsUrl: 'https://www.google.com/maps/place/Devin,+Bulgaria/@41.7429,24.3915,14z',
       },
       'borino': {
         name: { en: 'Borino', bg: 'Борино' },
@@ -123,7 +123,7 @@ const TRIPS = [
         accessibility: { en: 'Partially — village paths are uneven', bg: 'Частично — селските пътеки са неравни' },
         bestTime: { en: 'Midday (11am-1pm)', bg: 'Обяд (11-13ч)' },
         duration: { en: '30-45 min', bg: '30-45 мин' },
-        mapsUrl: 'https://www.google.com/maps/search/?api=1&query=41.685,24.290',
+        mapsUrl: 'https://www.google.com/maps/place/Borino,+Bulgaria/@41.815,24.345,14z',
       },
     },
     days: [
@@ -232,7 +232,7 @@ const TRIPS = [
         accessibility: { en: 'Partial — first section is easy, then gets rocky', bg: 'Частична — първият участък е лесен, после става скалист' },
         bestTime: { en: 'Morning (9-11am) for shade', bg: 'Сутрин (9-11ч) за сянка' },
         duration: { en: '1-2 hours', bg: '1-2 часа' },
-        mapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.483,22.650',
+        mapsUrl: 'https://www.google.com/maps/place/?cid=10556872480630538001',
       },
       'hisarlaka-fortress': {
         name: { en: 'Hisarlaka Fortress', bg: 'Крепостта Хисарлака' },
@@ -255,7 +255,7 @@ const TRIPS = [
         accessibility: { en: 'Not stroller-friendly — dirt path uphill', bg: 'Не е подходящо за количка — пясъчен път нагоре' },
         bestTime: { en: 'Late afternoon for views and light', bg: 'Следобед за гледка и светлина' },
         duration: { en: '45 min - 1 hour', bg: '45 мин - 1 час' },
-        mapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.285,22.690',
+        mapsUrl: 'https://www.google.com/maps/place/?cid=14614155432513835019',
       },
       'sapareva-banya': {
         name: { en: 'Sapareva Banya', bg: 'Сапарева баня' },
@@ -278,7 +278,7 @@ const TRIPS = [
         accessibility: { en: 'Fully stroller-friendly', bg: 'Напълно подходящо за количка' },
         bestTime: { en: 'Late afternoon (3-5pm)', bg: 'Следобед (15-17ч)' },
         duration: { en: '1-2 hours', bg: '1-2 часа' },
-        mapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.583,22.967',
+        mapsUrl: 'https://www.google.com/maps/place/?cid=14477167948847611648',
       },
       'maistora-gallery': {
         name: { en: 'Maistora Gallery', bg: 'Галерия Майстора' },
@@ -301,7 +301,7 @@ const TRIPS = [
         accessibility: { en: 'Stroller-friendly', bg: 'Подходящо за количка' },
         bestTime: { en: 'Mid-morning (10am-12pm)', bg: 'Следобед (10-12ч)' },
         duration: { en: '45 min - 1 hour', bg: '45 мин - 1 час' },
-        mapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.450,22.700',
+        mapsUrl: 'https://www.google.com/maps/place/?cid=12527108983561601963',
       },
       'sequoia-trees': {
         name: { en: 'Sequoia Trees', bg: 'Секвои' },
@@ -324,7 +324,7 @@ const TRIPS = [
         accessibility: { en: 'Fully stroller-friendly', bg: 'Напълно подходящо за количка' },
         bestTime: { en: 'Any time — always shaded', bg: 'По всяко време — винаги в сянка' },
         duration: { en: '20-30 min', bg: '20-30 мин' },
-        mapsUrl: 'https://www.google.com/maps/search/?api=1&query=42.520,22.750',
+        mapsUrl: 'https://www.google.com/maps/place/?cid=14637100042124943459',
       },
     },
     days: [
