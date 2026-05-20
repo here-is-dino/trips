@@ -39,12 +39,12 @@ const TRIPS = [
         lat: 42.108, lng: 24.318,
         image: null,
         description: {
-          en: 'A dramatic medieval fortress perched on a conical hill above Dorkovo. The ruins include walls, towers, and a church, all surrounded by extraordinary 360° views over the Vacha valley and the Rhodope mountains. The climb is short but steep — about 10 minutes up a clay track.',
-          bg: 'Драматична средновековна крепост, разположена на коничен хълм над Дорково. Руините включват стени, кули и църква, всичко заобиколено от изключителна 360° гледка към долината на Въча и Родопските планини. Изкачването е кратко, но стръмно — около 10 минути по глинен път.',
+          en: 'A dramatic medieval fortress perched on a conical hill above Dorkovo. The ruins include walls, towers, and a church, all surrounded by extraordinary 360° views over the Vacha valley and the Rhodope mountains. The climb is short but steep — about 10 minutes up a clay track.\n\nThe town was built on a steep height at 1,136 metres above sea level. Its outer walls closed an area of 25 decares and was dominated by a citadel at the top of the cliff. The foundations of three churches have been excavated as well as four large water storage tanks up to 10 metres deep.\n\nThe site was already settled in prehistoric times. The Bulgarians took the castle in the 9th century but with the end of the First Bulgarian Empire in the beginning of the 11th century the Byzantines conquered it. During the reign of the Bulgarian emperor Kaloyan (1197–1207), the fortress was the residence of his nephew, the despot Alexius Slav.',
+          bg: 'Драматична средновековна крепост, разположена на коничен хълм над Дорково. Руините включват стени, кули и църква, всичко заобиколено от изключителна 360° гледка към долината на Въча и Родопските планини. Изкачването е кратко, но стръмно — около 10 минути по глинен път.\n\nГрадът е построен на стръмна височина от 1136 м над морското ниво. Външните стени обграждат площ от 25 декара, а на върха на скалата се намира цитаделата. Разкопани са основите на три църкви и четири големи водоема с дълбочина до 10 м.\n\nМястото е обитавано още от доисторически времена. Българите завземат крепостта през IX век, но с края на Първото българско царство в началото на XI век византийците я завземат. По време на царуването на българския цар Калоян (1197–1207) крепостта е резиденция на племенника му, деспот Алексий Слав.',
         },
         highlights: {
-          en: ['360° panoramic views from the hilltop', 'Medieval walls and church ruins', 'Small museum at the base', 'Free access'],
-          bg: ['360° панорамна гледка от хълма', 'Средновековни стени и църковни руини', 'Малък музей в основата', 'Безплатен достъп'],
+          en: ['360° panoramic views from the hilltop', 'Medieval walls and church ruins', 'Three excavated churches', 'Four ancient water tanks up to 10m deep', 'Residence of Alexius Slav (13th c.)', 'Free access'],
+          bg: ['360° панорамна гледка от хълма', 'Средновековни стени и църковни руини', 'Три разкопани църкви', 'Четири древни водоема до 10м дълбочина', 'Резиденция на Алексий Слав (XIII в.)', 'Безплатен достъп'],
         },
         tips: {
           en: 'The climb is steep on clay — wear proper shoes, not flip-flops. Not stroller-friendly (use the carrier). Best in the morning before it gets hot. The museum at the base has interesting artifacts from the site.',
@@ -62,12 +62,12 @@ const TRIPS = [
         lat: 42.135, lng: 24.455,
         image: null,
         description: {
-          en: 'One of Bulgaria\'s most spectacular engineering feats — a massive concrete dam spanning a narrow limestone gorge. The reservoir stretches back into the mountains, and the viewpoint from the top gives a vertigo-inducing drop to the river below. The gorge road leading to it has tunnels cut into the cliff face.',
-          bg: 'Едно от най-впечатващите инженерни постижения на България — масивен бетонов язовир, пресичащ тесен варовиков каньон. Резервоарът се простира назад към планините, а гледката от върха дава вртоглавичен пад към реката отдолу. Пътят през каньона има тунели, изсечени в скалита.',
+          en: 'One of Bulgaria\'s most spectacular engineering feats — a massive concrete dam spanning a narrow limestone gorge. The reservoir stretches back into the mountains, and the viewpoint from the top gives a vertigo-inducing drop to the river below. The gorge road leading to it has tunnels cut into the cliff face.\n\nBuilt in the mid-20th century, Vacha Dam is one of the highest concrete dams in Bulgaria at 46.5 meters. The Vacha Gorge itself is a geological wonder — the river carved through limestone over millions of years, creating sheer walls and natural tunnels. The area is home to rare bird species including the Egyptian vulture and the peregrine falcon.',
+          bg: 'Едно от най-впечатващите инженерни постижения на България — масивен бетонов язовир, пресичащ тесен варовиков каньон. Резервоарът се простира назад към планините, а гледката от върха дава вртоглавичен пад към реката отдолу. Пътят през каньона има тунели, изсечени в скалита.\n\nПостроен в средата на XX век, язовир Въча е един от най-високите бетонови язовири в България — 46,5 м. Въчинското ждрело е геологическо чудо — реката е прорязала варовицата за милиони години, създавайки отвесни стени и естествени тунели. Районът е дом на редки видове птици, включително египетския лешояд и сокола сапсан.',
         },
         highlights: {
-          en: ['Massive dam spanning a narrow gorge', 'Tunnels cut into the cliff face on the approach road', 'Viewpoint from the top of the dam', 'Picnic spots on the rocks nearby'],
-          bg: ['Масивен язовир, пресичащ тесен каньон', 'Тунели, изсечени в скалита по подходния път', 'Гледка от върха на язовира', 'Места за пикник по камъните наблизо'],
+          en: ['Massive dam spanning a narrow gorge', 'Tunnels cut into the cliff face on the approach road', 'Viewpoint from the top of the dam', 'Picnic spots on the rocks nearby', 'Home to rare Egyptian vultures'],
+          bg: ['Масивен язовир, пресичащ тесен каньон', 'Тунели, изсечени в скалита по подходния път', 'Гледка от върха на язовира', 'Места за пикник по камъните наблизо', 'Дом на редки египетски лешояди'],
         },
         tips: {
           en: 'The road through the gorge is narrow but paved — take it slow in the T3. Water shoes are great for the rocks near the dam. Not for anyone afraid of heights! The best viewpoint is from the dam crest.',
@@ -85,12 +85,12 @@ const TRIPS = [
         lat: 41.740, lng: 24.400,
         image: null,
         description: {
-          en: 'A real working spa town in the Rhodopes — not touristy, just authentic. The town square has a natural spring where you can fill bottles with mineral water for free. There are small cafes, a market, and a relaxed mountain-town atmosphere. Good coffee and a proper stretch after the mountain drive.',
-          bg: 'Истински работещ курорт в Родопите — не туристически, а автентичен. На градския площад има естествен извор, където може да пълните бутилки с минерална вода безплатно. Има малки кафенета, пазар и спокойна планинска атмосфера. Добро кафе и разтягане след планинското караван.',
+          en: 'A real working spa town in the Rhodopes — not touristy, just authentic. The town square has a natural spring where you can fill bottles with mineral water for free. There are small cafes, a market, and a relaxed mountain-town atmosphere. Good coffee and a proper stretch after the mountain drive.\n\nDevin has been known for its healing mineral springs since ancient times. The town\'s name is believed to come from the Thracian word for "spring" or "water." The mineral water that flows freely on the square is rich in calcium and magnesium, and locals swear it cures everything from joint pain to hangovers. Every morning, residents come with jugs to collect water — join them and taste the difference.',
+          bg: 'Истински работещ курорт в Родопите — не туристически, а автентичен. На градския площад има естествен извор, където може да пълните бутилки с минерална вода безплатно. Има малки кафенета, пазар и спокойна планинска атмосфера. Добро кафе и разтягане след планинското караван.\n\nДевин е известен с лечебните си минерални извори от древни времена. Името на градът се смята, че идва от тракийската дума за "извор" или "вода". Минералната вода, която тече свободно на площада, е богата на калций и магнезий, и местните кълнат, че лекува всичко — от ставни болки до махмурлук. Всяка сутрин жителидо идват с бъчви да наберат вода — присъединете се и опитайте разликата.',
         },
         highlights: {
-          en: ['Free mineral water from public spring', 'Authentic mountain town atmosphere', 'Good coffee on the square', 'Local market for supplies'],
-          bg: ['Безплатна минерална вода от обществен извор', 'Автентична планинска атмосфера', 'Добро кафе на площада', 'Местен пазар за припаси'],
+          en: ['Free mineral water from public spring', 'Authentic mountain town atmosphere', 'Good coffee on the square', 'Local market for supplies', 'Healing springs known since antiquity'],
+          bg: ['Безплатна минерална вода от обществен извор', 'Автентична планинска атмосфера', 'Добро кафе на площада', 'Местен пазар за припаси', 'Лечебни извори от древни времена'],
         },
         tips: {
           en: 'Fill all your water bottles at the spring — it\'s excellent water. The market has local honey, herbs, and cheese. Public pools are available if you have time. Archie-friendly town with plenty of shade.',
@@ -108,12 +108,12 @@ const TRIPS = [
         lat: 41.685, lng: 24.290,
         image: null,
         description: {
-          en: 'A high-Rhodope village at ~1000m that hasn\'t changed shape in 80 years. Stone houses with slate roofs, walnut trees, old women in traditional dress in their yards, and complete silence except for birdsong. No tourist infrastructure — just pure authenticity. The kind of place that makes you want to sell everything and move to the mountains.',
-          bg: 'Високо родопско село на ~1000м, което не е променило формата си от 80 години. Каменни къщи с шисти, орехови дървета, стари жени в традиционни дрехи в дворовете и пълна тишина освен птичи песни. Без туристическа инфраструктура — само чиста автентичност. Мястото, което те кара да искаш да продадеш всичко и да се преселиш в планината.',
+          en: 'A high-Rhodope village at ~1000m that hasn\'t changed shape in 80 years. Stone houses with slate roofs, walnut trees, old women in traditional dress in their yards, and complete silence except for birdsong. No tourist infrastructure — just pure authenticity. The kind of place that makes you want to sell everything and move to the mountains.\n\nBorino is one of the highest villages in the Western Rhodopes and has preserved its traditional architecture almost entirely. The stone houses with slate roofs are built without cement — just carefully stacked stones. The walnut trees in the village are over 200 years old and are considered sacred by locals. In autumn, the village comes alive with the traditional "kukeri" ritual, where men dress in elaborate costumes and masks to chase away evil spirits.',
+          bg: 'Високо родопско село на ~1000м, което не е променило формата си от 80 години. Каменни къщи с шисти, орехови дървета, стари жени в традиционни дрехи в дворовете и пълна тишина освен птичи песни. Без туристическа инфраструктура — само чиста автентичност. Мястото, което те кара да искаш да продадеш всичко и да се преселиш в планината.\n\nБорино е едно от най-високите села в Западните Родопи и е запазило традиционната си архитектура почти изцяло. Каменните къщи с шисти са построени без цимент — само внимателно подредени камъни. Ореховите дървета в селото са на над 200 години и се считат за свещени от местните. През есента селото оживява с традиционния ритуал "кукери", където мъжете се обличат в сложни костюми и маски, за да прогонят злите духове.',
         },
         highlights: {
-          en: ['Traditional stone architecture', 'Walnut trees and mountain streams', 'Complete peace and quiet', 'No tourist crowds — ever'],
-          bg: ['Традиционна каменна архитектура', 'Орехови дървета и планински потоци', 'Пълно спокойствие', 'Без туристически тълпи — никога'],
+          en: ['Traditional stone architecture', 'Walnut trees and mountain streams', 'Complete peace and quiet', 'No tourist crowds — ever', 'Sacred 200-year-old walnut trees', 'Traditional kukeri ritual in autumn'],
+          bg: ['Традиционна каменна архитектура', 'Орехови дървета и планински потоци', 'Пълно спокойствие', 'Без туристически тълпи — никога', 'Свещени 200-годишни орехови дървета', 'Традиционен ритуал кукери през есента'],
         },
         tips: {
           en: 'This is a living village, not a museum — be respectful. The road in is narrow but paved. Great spot for a final picnic lunch under a tree. Take photos of the architecture but ask before photographing people.',
@@ -217,12 +217,12 @@ const TRIPS = [
         lat: 42.483, lng: 22.650,
         image: null,
         description: {
-          en: 'A spectacular limestone canyon carved by the Struma River. The path follows the river through narrow sections with sheer walls rising on both sides. In places the gorge is so narrow you can touch both walls. The water is crystal clear and cold — perfect for dipping feet on a hot day.',
-          bg: 'Впечатващ варовиков каньон, издълбан от река Струма. Пътеката следва реката през тесни участъци с отвесни стени от двете страни. На места ждрелото е толкова тясно, че можеш да докоснеш и двете стени. Водата е кристално чиста и студена — перфектна за потапяне на крака в горещ ден.',
+          en: 'A spectacular limestone canyon carved by the Struma River. The path follows the river through narrow sections with sheer walls rising on both sides. In places the gorge is so narrow you can touch both walls. The water is crystal clear and cold — perfect for dipping feet on a hot day.\n\nZemen Gorge is one of the most dramatic limestone canyons in Bulgaria, with walls rising up to 100 meters. The gorge was carved over millions of years by the Struma River cutting through ancient limestone. The area has been inhabited since Thracian times — ruins of a medieval monastery dedicated to St. George can be seen carved into the cliff face. The tunnels along the road were hand-carved in the early 20th century to connect the isolated villages of the region.',
+          bg: 'Впечатващ варовиков каньон, издълбан от река Струма. Пътеката следва реката през тесни участъци с отвесни стени от двете страни. На места ждрелото е толкова тясно, че можеш да докоснеш и двете стени. Водата е кристално чиста и студена — перфектна за потапяне на крака в горещ ден.\n\nЗеменско ждрело е един от най-драматичните варовикови каньони в България, със стени до 100 м височина. Ждрелото е издълбано за милиони години от река Струма, прорязваща древен варовик. Районът е обитаван от тракийско време — руини на средновековен манастир, посветен на св. Георги, могат да се видят врязани в скалата. Тунелите по пътя са ръчно изсечени в началото на XX век.',
         },
         highlights: {
-          en: ['Narrow canyon sections with sheer limestone walls', 'Crystal clear river pools', 'Shaded path — stays cool in summer', 'Free access, no entrance fee'],
-          bg: ['Тесни участъци с отвесни варовикови стени', 'Кристално чисти речни вирове', 'Сенчест път — остава хладен лято', 'Безплатен достъп'],
+          en: ['Narrow canyon sections with sheer limestone walls', 'Crystal clear river pools', 'Shaded path — stays cool in summer', 'Free access, no entrance fee', 'Medieval monastery ruins in the cliff', 'Hand-carved early 20th century tunnels'],
+          bg: ['Тесни участъци с отвесни варовикови стени', 'Кристално чисти речни вирове', 'Сенчест път — остава хладен лято', 'Безплатен достъп', 'Руини на средновековен манастир в скалата', 'Ръчно изсечени тунели от началото на XX в.'],
         },
         tips: {
           en: 'Wear water shoes or sandals with grip — the rocks can be slippery. The path is stroller-unfriendly past the first 500m. Best in the morning before the sun hits the gorge floor. About 1-2 hours for a good walk.',
@@ -240,12 +240,12 @@ const TRIPS = [
         lat: 42.285, lng: 22.690,
         image: null,
         description: {
-          en: 'A dramatic hilltop fortress overlooking Kyustendil, with layers of history from Roman times through the medieval Bulgarian empire. The walls and towers are partially restored, and the views from the top stretch across the entire valley. Bourya will love running along the ramparts.',
-          bg: 'Драматична хълмна крепост с изглед към Кюстендил, с слоеве от история от римско време до средновековната българска империя. Стените и кулите са частично реставрирани, а изгледът от върха се простира над цялата долина. Буря ще обича да тича по стените.',
+          en: 'A dramatic hilltop fortress overlooking Kyustendil, with layers of history from Roman times through the medieval Bulgarian empire. The walls and towers are partially restored, and the views from the top stretch across the entire valley. Bourya will love running along the ramparts.\n\nHisarlaka is one of the oldest continuously inhabited fortresses in Bulgaria. It began as a Roman military camp in the 1st century AD, was expanded by the Byzantines, and became a key Bulgarian fortress during the Middle Ages. The fortress walls you see today date mainly from the 5th-6th centuries. The site has yielded Roman coins, medieval pottery, and even Thracian artifacts, making it a layered archaeological treasure.',
+          bg: 'Драматична хълмна крепост с изглед към Кюстендил, с слоеве от история от римско време до средновековната българска империя. Стените и кулите са частично реставрирани, а изгледът от върха се простира над цялата долина. Буря ще обича да тича по стените.\n\nХисарлака е една от най-старите непрекъснато обитавани крепости в България. Започва като римски военен лагер през I век от н.е., е разширена от византийците и става ключова българска крепост през Средновековието. Стените на крепостта, които виждате днес, датират главно от V-VI век. На мястото са открити римски монети, средновековна керамоногия и дори тракийски артефакти.',
         },
         highlights: {
-          en: ['Panoramic views over Kyustendil and the valley', 'Roman-era walls and medieval towers', 'Free to explore', 'Great picnic spot on the grass inside the walls'],
-          bg: ['Панорамна гледка към Кюстендил и долината', 'Римски стени и средновековни кули', 'Безплатно за разглеждане', 'Страхотно място за пикник на тревата вътре в стените'],
+          en: ['Panoramic views over Kyustendil and the valley', 'Roman-era walls and medieval towers', 'Free to explore', 'Great picnic spot on the grass inside the walls', 'One of Bulgaria\'s oldest fortresses (1st c. AD)', 'Thracian, Roman & medieval artifacts found here'],
+          bg: ['Панорамна гледка към Кюстендил и долината', 'Римски стени и средновековни кули', 'Безплатно за разглеждане', 'Страхотно място за пикник на тревата вътре в стените', 'Една от най-старите крепости в България (I в. от н.е.)', 'Открити тракийски, римски и средновековни артефакти'],
         },
         tips: {
           en: 'The climb up is about 10 minutes on a dirt path — manageable with a carrier but not with a stroller. Bring water, no facilities at the top. Best in late afternoon for golden light.',
@@ -263,12 +263,12 @@ const TRIPS = [
         lat: 42.583, lng: 22.967,
         image: null,
         description: {
-          en: 'A small town built around natural thermal springs. The main pool complex has warm mineral water (around 35-38°C) that\'s perfect for relaxing after a day of driving and hiking. There are both indoor and outdoor pools, and the water is said to have therapeutic properties.',
-          bg: 'Малко градче, построено около естествени термални извори. Основният басейнен комплекс има топла минерална вода (около 35-38°C), перфектна за отдих след ден на шофиране и разходки. Има закрити и открити басейни, а водата се счита за терапевтична.',
+          en: 'A small town built around natural thermal springs. The main pool complex has warm mineral water (around 35-38°C) that\'s perfect for relaxing after a day of driving and hiking. There are both indoor and outdoor pools, and the water is said to have therapeutic properties.\n\nSapareva Banya has been famous for its thermal waters since Roman times. The town sits at the foot of Mount Rila, Bulgaria\'s highest mountain. The mineral water here is naturally heated to 35-38°C and is rich in minerals. The town is also known for its traditional Bulgarian cuisine — try the local "kavarma" (slow-cooked meat stew) at one of the small mehanas.',
+          bg: 'Малко градче, построено около естествени термални извори. Основният басейнен комплекс има топла минерална вода (около 35-38°C), перфектна за отдих след ден на шофиране и разходки. Има закрити и открити басейни, а водата се счита за терапевтична.\n\nСапарева баня е известна с термалните си води от римско време. Градчето се намира в подножието на планина Рила, най-високата планина в България. Минералната вода тук е естествено загрята до 35-38°C и е богата на минерали. Градчето е известно и с традиционната българска кухня — опитайте местния "каварма" (бавно готвено месо) в едно от малките механета.',
         },
         highlights: {
-          en: ['Natural thermal water at 35-38°C', 'Indoor and outdoor pools', 'Stroller-friendly facilities', 'Affordable entry fee (~5-10 BGN / €3-5)'],
-          bg: ['Естествена термална вода при 35-38°C', 'Закрити и открити басейни', 'Удобства за колички', 'Приемна такса (~5-10 лв. / €3-5)'],
+          en: ['Natural thermal water at 35-38°C', 'Indoor and outdoor pools', 'Stroller-friendly facilities', 'Affordable entry fee (~5-10 BGN / €3-5)', 'At the foot of Mount Rila', 'Traditional Bulgarian cuisine nearby'],
+          bg: ['Естествена термална вода при 35-38°C', 'Закрити и открити басейни', 'Удобства за колички', 'Приемна такса (~5-10 лв. / €3-5)', 'В подножието на планина Рила', 'Традиционна българска кухня наблизо'],
         },
         tips: {
           en: 'Bring swim diapers for Clement. Archie will need to wait in the van (shaded parking available). The outdoor pool is nicest in the late afternoon. Towels can be rented on-site.',
@@ -286,12 +286,12 @@ const TRIPS = [
         lat: 42.450, lng: 22.700,
         image: null,
         description: {
-          en: 'A surprising find in the Bulgarian countryside — a contemporary art gallery housed in a converted building with rotating exhibitions. The surrounding grounds have outdoor sculptures and installations. It\'s the kind of place that makes you stop and think, and the kids can run around the garden between artworks.',
-          bg: 'Изненадващ откритие в българската провинция — галерия за съвременно изкуство в преоборудвана сграда с въртящи се изложения. Околните терени имат открити скулптури и инсталации. Това е мястото, което те кара да спреш и да мислиш, а децата могат да тичат из градината между произведенията.',
+          en: 'A surprising find in the Bulgarian countryside — a contemporary art gallery housed in a converted building with rotating exhibitions. The surrounding grounds have outdoor sculptures and installations. It\'s the kind of place that makes you stop and think, and the kids can run around the garden between artworks.\n\nMaistora Gallery is one of the few contemporary art spaces in rural Bulgaria. It was founded by a collective of Bulgarian artists who wanted to bring modern art outside the capital. The gallery hosts rotating exhibitions of painting, sculpture, and installation art. The name "Maistora" comes from the old Bulgarian word for "master craftsman." The garden features outdoor sculptures by local and international artists.',
+          bg: 'Изненадващ откритие в българската провинция — галерия за съвременно изкуство в преоборудвана сграда с въртящи се изложения. Околните терени имат открити скулптури и инсталации. Това е мястото, което те кара да спреш и да мислиш, а децата могат да тичат из градината между произведенията.\n\nГалерия Майстора е едно от малкото пространства за съвременно изкуство в селска България. Основана е от колектив от български художници, които искали да донесат модерното изкуство извън столицата. Галерията представя въртящи се изложения на живопис, скулптура и инсталационно изкуство. Името "Майстора" идва от старобългарската дума за "майстор". Градината представлява открити скулптури на местни и международни художници.',
         },
         highlights: {
-          en: ['Rotating contemporary art exhibitions', 'Outdoor sculpture garden', 'Free or low-cost entry', 'Peaceful rural setting'],
-          bg: ['Въртящи се изложения на съвременно изкуство', 'Открита градина със скулптури', 'Безплатен или евтин вход', 'Спокойна селска обстановка'],
+          en: ['Rotating contemporary art exhibitions', 'Outdoor sculpture garden', 'Free or low-cost entry', 'Peaceful rural setting', 'One of few rural art galleries in Bulgaria', 'Sculptures by local & international artists'],
+          bg: ['Въртящи се изложения на съвременно изкуство', 'Открита градина със скулптури', 'Безплатен или евтин вход', 'Спокойна селска обстановка', 'Една от малките селски галерии в България', 'Скулптури на местни и международни художници'],
         },
         tips: {
           en: 'Check opening hours before going — it\'s a small gallery and may close unexpectedly. The garden is the real highlight for kids. Combine with a picnic lunch.',
@@ -309,12 +309,12 @@ const TRIPS = [
         lat: 42.520, lng: 22.750,
         image: null,
         description: {
-          en: 'A grove of giant sequoia trees planted in the early 20th century — towering redwoods that feel completely out of place in the Bulgarian landscape. The kids will be dwarfed by the massive trunks. A short, easy walking path loops through the grove.',
-          bg: 'Горичка от гигантски секвои, засадени в началото на 20-ти век — величествени червени дървета, които изглеждат напълно неуместни в българския пейзаж. Децата ще бъдат дребни до масивните стъбла. Кратък и лесен път минава през горичката.',
+          en: 'A grove of giant sequoia trees planted in the early 20th century — towering redwoods that feel completely out of place in the Bulgarian landscape. The kids will be dwarfed by the massive trunks. A short, easy walking path loops through the grove.\n\nThese giant sequoias were planted in the early 1900s, likely as an experimental forestry project during the period when Bulgaria was importing exotic tree species. The trees have thrived in the cool, moist climate of the Kyustendil region and now reach heights of over 30 meters. Locals call them "the American trees." In autumn, the forest floor is carpeted with fallen needles that smell incredible.',
+          bg: 'Горичка от гигантски секвои, засадени в началото на 20-ти век — величествени червени дървета, които изглеждат напълно неуместни в българския пейзаж. Децата ще бъдат дребни до масивните стъбла. Кратък и лесен път минава през горичката.\n\nТези гигантски секвои са засадени в началото на 1900-те години, вероятно като експериментален лесостопански проект по време на периода, когато България внася екзотични видове дървета. Дърветата са процъфтявали в хладния, влажен климат на Кюстендилския регион и сега достигат височина над 30 м. Местните ги наричат "американските дървета". През есента подълта на гората е покрита с паднали иглички, които миришат невероятно.',
         },
         highlights: {
-          en: ['Towering giant sequoias (some 30+ meters tall)', 'Easy flat walking path', 'Shaded and cool even in summer', 'Free access'],
-          bg: ['Величествени гигантски секвои (някои над 30м)', 'Лесен равен път за разходка', 'Сенчесто и хладор дори лято', 'Безплатен достъп'],
+          en: ['Towering giant sequoias (some 30+ meters tall)', 'Easy flat walking path', 'Shaded and cool even in summer', 'Free access', 'Planted in early 1900s as exotic experiment', 'Amazing needle carpet in autumn'],
+          bg: ['Величествени гигантски секвои (някои над 30м)', 'Лесен равен път за разходка', 'Сенчесто и хладор дори лято', 'Безплатен достъп', 'Засадени в началото на 1900-те като екзотичен експеримент', 'Невероятна постилка от иглички през есента'],
         },
         tips: {
           en: 'The path is short (15-20 min loop) and completely flat — perfect for the stroller. Bring a camera, the scale of the trees is hard to capture. Best after rain when the forest floor smells amazing.',
