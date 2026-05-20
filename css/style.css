@@ -390,19 +390,23 @@ a:hover { text-decoration: underline; }
 
 /* ── Map (Leaflet) ─────────────────────────────────────── */
 .trip-map {
-  display: none;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
 }
 .trip-map .leaflet-container {
   width: 100%;
   height: 100%;
   font-family: Inter, -apple-system, sans-serif;
 }
-/* Hide Leaflet Routing Machine itinerary panel */
-.leaflet-routing-container {
-  display: none !important;
-}
-.leaflet-routing-collapse-btn {
-  display: none !important;
+/* Hide Leaflet attribution on small screens */
+@media (max-width: 480px) {
+  .leaflet-control-attribution {
+    font-size: 9px;
+  }
 }
 /* Minimal marker style */
 .custom-marker {
@@ -903,6 +907,16 @@ a:hover { text-decoration: underline; }
   opacity: 0.85;
   text-decoration: none;
   color: #fff;
+}
+
+.stop-wikipedia-btn {
+  background: #3366cc;
+  margin-left: 8px;
+}
+
+.stop-wikipedia-btn:hover {
+  background: #2a56b0;
+  opacity: 1;
 }
 
 .stop-map {

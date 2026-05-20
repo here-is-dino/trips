@@ -355,6 +355,12 @@ const app = {
             </a>
           ` : ''}
 
+          ${stop.wikipediaUrl ? `
+            <a href="${stop.wikipediaUrl}" target="_blank" rel="noopener" class="stop-maps-btn stop-wikipedia-btn">
+              📖 ${t('wikipedia')}
+            </a>
+          ` : ''}
+
           ${stop.highlights && ((currentLang === 'bg' ? stop.highlights.bg : stop.highlights.en) || []).length > 0 ? `
             <section class="stop-section">
               <h2>${t('highlights')}</h2>
@@ -403,7 +409,6 @@ const app = {
     if (typeof L === 'undefined') return;
 
     const routeStops = trip.map.route;
-    const waypoints = routeStops.map(s => L.latLng(s.lat, s.lng));
 
     const map = L.map('trip-map', { scrollWheelZoom: false })
       .setView([routeStops[0].lat, routeStops[0].lng], trip.map.zoom);
@@ -413,55 +418,25 @@ const app = {
       maxZoom: 17,
     }).addTo(map);
 
-    // Use Leaflet Routing Machine with OSRM for road routes
-    if (typeof L.Routing !== 'undefined') {
-      const routingControl = L.Routing.control({
-        waypoints: waypoints,
-        routeWhileDragging: false,
-        addWaypoints: false,
-        fitSelectedRoutes: true,
-        showAlternatives: false,
-        lineOptions: [
-          { styles: [{ color: '#3d2f1e', weight: 4, opacity: 0.9 }] },
-          { styles: [{ color: '#3d2f1e', weight: 2, opacity: 0.6, dashArray: '6, 4' }] }
-        ],
-        createMarker: function(i, waypoint, n) {
-          const stop = routeStops[i];
-          const color = { start: '#2d8a4e', end: '#d94f4f', camp: '#e67e22', highlight: '#8b5cf6', stop: '#3d2f1e' }[stop.type] || '#3d2f1e';
-          const size = (stop.type === 'start' || stop.type === 'end') ? 14 : 10;
-          const marker = L.marker(waypoint.latLng, {
-            icon: L.divIcon({
-              className: 'custom-marker marker-' + stop.type,
-              iconSize: [size, size],
-              iconAnchor: [size / 2, size / 2]
-            }),
-            draggable: false
-          });
-          marker.bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${i + 1}. ${L(stop.name)}</strong><br><span style="color:#6a6a6a;">${L(stop.label)}</span></div>`);
-          return marker;
-        },
-        show: false, // hide the itinerary panel
-        collapsible: true,
-      }).addTo(map);
+    // Draw route line
+    const routeCoords = routeStops.map(s => [s.lat, s.lng]);
+    L.polyline(routeCoords, { color: '#3d2f1e', weight: 3, opacity: 0.8, dashArray: '8, 6' }).addTo(map);
 
-      // Hide the routing container (itinerary panel)
-      setTimeout(() => {
-        const container = document.querySelector('.leaflet-routing-container');
-        if (container) container.style.display = 'none';
-      }, 500);
-    } else {
-      // Fallback: straight lines if LRM not loaded
-      const routeCoords = routeStops.map(s => [s.lat, s.lng]);
-      L.polyline(routeCoords, { color: '#3d2f1e', weight: 3, opacity: 0.8, dashArray: '8, 6' }).addTo(map);
-      routeStops.forEach((stop, i) => {
-        const color = { start: '#2d8a4e', end: '#d94f4f', camp: '#e67e22', highlight: '#8b5cf6', stop: '#3d2f1e' }[stop.type] || '#3d2f1e';
-        const size = (stop.type === 'start' || stop.type === 'end') ? 14 : 10;
-        const icon = L.divIcon({ className: 'custom-marker marker-' + stop.type, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
-        L.marker([stop.lat, stop.lng], { icon }).addTo(map)
-          .bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${i + 1}. ${L(stop.name)}</strong><br><span style="color:#6a6a6a;">${L(stop.label)}</span></div>`);
-      });
-      map.fitBounds(L.latLngBounds(routeCoords), { padding: [40, 40] });
-    }
+    // Add markers
+    routeStops.forEach((stop, i) => {
+      const color = { start: '#2d8a4e', end: '#d94f4f', camp: '#e67e22', highlight: '#8b5cf6', stop: '#3d2f1e' }[stop.type] || '#3d2f1e';
+      const size = (stop.type === 'start' || stop.type === 'end') ? 14 : 10;
+      const icon = L.divIcon({ className: 'custom-marker marker-' + stop.type, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
+      L.marker([stop.lat, stop.lng], { icon }).addTo(map)
+        .bindPopup(`<div style="font-family:Inter,sans-serif;font-size:13px;line-height:1.4;"><strong>${i + 1}. ${L(stop.name)}</strong><br><span style="color:#6a6a6a;">${L(stop.label)}</span></div>`);
+    });
+
+    // Fit bounds to show all markers
+    map.fitBounds(L.latLngBounds(routeCoords), { padding: [40, 40] });
+
+    // Fix rendering — invalidateSize after container is in DOM
+    setTimeout(() => map.invalidateSize(), 100);
+    setTimeout(() => map.invalidateSize(), 500);
   },
 
   // ── Stop Map ────────────────────────────────────────────

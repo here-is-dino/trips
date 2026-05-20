@@ -32,6 +32,7 @@ const LOCALES = {
     yes: 'Yes',
     no: 'No',
     openInMaps: 'Open in Google Maps',
+    wikipedia: 'Wikipedia',
 
     // Status
     planned: 'Planned',
@@ -80,6 +81,7 @@ const LOCALES = {
     yes: 'Да',
     no: 'Не',
     openInMaps: 'Отвори в Google Maps',
+    wikipedia: 'Уикипедия',
 
     // Status
     planned: 'Планирано',

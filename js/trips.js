@@ -55,6 +55,7 @@ const TRIPS = [
         bestTime: { en: 'Morning (9-11am)', bg: 'Сутрин (9-11ч)' },
         duration: { en: '1-1.5 hours', bg: '1-1.5 часа' },
         mapsUrl: 'https://www.google.com/maps/place/?cid=16916342825332376007',
+        wikipediaUrl: 'https://en.wikipedia.org/wiki/Tsepina',
       },
       'vacha-dam': {
         name: { en: 'Vacha Dam', bg: 'Язовир Въча' },
@@ -78,6 +79,7 @@ const TRIPS = [
         bestTime: { en: 'Midday for best light in the gorge', bg: 'Обяд за най-добра светлина в каньона' },
         duration: { en: '45 min - 1 hour', bg: '45 мин - 1 час' },
         mapsUrl: 'https://www.google.com/maps/place/?cid=17211587667899355621',
+        wikipediaUrl: 'https://en.wikipedia.org/wiki/Vacha_Dam',
       },
       'devin': {
         name: { en: 'Devin', bg: 'Девин' },
@@ -101,6 +103,7 @@ const TRIPS = [
         bestTime: { en: 'Mid-morning (10am-12pm)', bg: 'Следобед (10-12ч)' },
         duration: { en: '30-45 min', bg: '30-45 мин' },
         mapsUrl: 'https://www.google.com/maps/place/Devin,+Bulgaria/@41.7429,24.3915,14z',
+        wikipediaUrl: 'https://en.wikipedia.org/wiki/Devin,_Bulgaria',
       },
       'borino': {
         name: { en: 'Borino', bg: 'Борино' },
@@ -124,6 +127,7 @@ const TRIPS = [
         bestTime: { en: 'Midday (11am-1pm)', bg: 'Обяд (11-13ч)' },
         duration: { en: '30-45 min', bg: '30-45 мин' },
         mapsUrl: 'https://www.google.com/maps/place/Borino,+Bulgaria/@41.815,24.345,14z',
+        wikipediaUrl: 'https://en.wikipedia.org/wiki/Borino',
       },
     },
     days: [
@@ -233,6 +237,7 @@ const TRIPS = [
         bestTime: { en: 'Morning (9-11am) for shade', bg: 'Сутрин (9-11ч) за сянка' },
         duration: { en: '1-2 hours', bg: '1-2 часа' },
         mapsUrl: 'https://www.google.com/maps/place/?cid=10556872480630538001',
+        wikipediaUrl: 'https://en.wikipedia.org/wiki/Zemen_Gorge',
       },
       'hisarlaka-fortress': {
         name: { en: 'Hisarlaka Fortress', bg: 'Крепостта Хисарлака' },
@@ -256,6 +261,7 @@ const TRIPS = [
         bestTime: { en: 'Late afternoon for views and light', bg: 'Следобед за гледка и светлина' },
         duration: { en: '45 min - 1 hour', bg: '45 мин - 1 час' },
         mapsUrl: 'https://www.google.com/maps/place/?cid=14614155432513835019',
+        wikipediaUrl: 'https://en.wikipedia.org/wiki/Hisarlaka',
       },
       'sapareva-banya': {
         name: { en: 'Sapareva Banya', bg: 'Сапарева баня' },
@@ -279,6 +285,7 @@ const TRIPS = [
         bestTime: { en: 'Late afternoon (3-5pm)', bg: 'Следобед (15-17ч)' },
         duration: { en: '1-2 hours', bg: '1-2 часа' },
         mapsUrl: 'https://www.google.com/maps/place/?cid=14477167948847611648',
+        wikipediaUrl: 'https://en.wikipedia.org/wiki/Sapareva_Banya',
       },
       'maistora-gallery': {
         name: { en: 'Maistora Gallery', bg: 'Галерия Майстора' },
