@@ -431,7 +431,7 @@ a:hover { text-decoration: underline; }
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 .weather-grid::-webkit-scrollbar { display: none; }
 .weather-day {
