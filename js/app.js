@@ -97,6 +97,7 @@ const app = {
       case 'stop':
         main.innerHTML = this.renderStop(this.currentTripId, this.currentStopId);
         requestAnimationFrame(() => this.initStopMap(this.currentTripId, this.currentStopId));
+        setTimeout(() => this.initStopImagePan(), 100);
         break;
       default:
         main.innerHTML = this.renderDashboard();
@@ -306,8 +307,8 @@ const app = {
           <p class="stop-description">${L(stop.description)}</p>
 
           ${stop.image ? `
-            <div class="stop-image-pan">
-              <img src="${stop.image}" alt="${L(stop.name)}">
+            <div class="stop-image-pan" id="stop-image-pan">
+              <img src="${stop.image}" alt="${L(stop.name)}" id="stop-image-pan-img">
             </div>
           ` : ''}
 
@@ -391,6 +392,88 @@ const app = {
         </footer>
       </div>
     `;
+  },
+
+  // ── Stop Image Pan Swipe ─────────────────────────────────
+  initStopImagePan() {
+    const container = document.getElementById('stop-image-pan');
+    const img = document.getElementById('stop-image-pan-img');
+    if (!container || !img) return;
+
+    // Wait for image to load to know its natural width
+    const setupPan = () => {
+      const containerWidth = container.offsetWidth;
+      const imgWidth = img.naturalWidth || img.width;
+      // The CSS makes img height:100%, so compute actual rendered width
+      const renderedWidth = img.offsetWidth;
+      const maxPan = Math.max(0, renderedWidth - containerWidth);
+
+      if (maxPan <= 0) return; // no overflow, no need to pan
+
+      let startX = 0;
+      let startPan = 0;
+      let currentPan = 0;
+      let isDragging = false;
+      let autoPanTimer = null;
+
+      // Disable CSS animation while user interacts
+      const stopAutoPan = () => {
+        img.style.animation = 'none';
+        img.style.transition = 'none';
+        if (autoPanTimer) clearTimeout(autoPanTimer);
+      };
+
+      const setPan = (px) => {
+        currentPan = Math.max(-maxPan, Math.min(0, px));
+        img.style.transform = `translateX(${currentPan}px)`;
+      };
+
+      // Touch events
+      container.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        stopAutoPan();
+        startX = e.touches[0].clientX;
+        startPan = currentPan;
+        // Also stop the CSS animation
+        img.style.animationPlayState = 'paused';
+      }, { passive: true });
+
+      container.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const dx = e.touches[0].clientX - startX;
+        setPan(startPan + dx);
+      }, { passive: true });
+
+      container.addEventListener('touchend', () => {
+        isDragging = false;
+      }, { passive: true });
+
+      // Mouse events (for desktop testing)
+      container.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        stopAutoPan();
+        startX = e.clientX;
+        startPan = currentPan;
+        img.style.animationPlayState = 'paused';
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - startX;
+        setPan(startPan + dx);
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+    };
+
+    if (img.complete) {
+      setupPan();
+    } else {
+      img.addEventListener('load', setupPan);
+    }
   },
 
   renderGallery(images) {

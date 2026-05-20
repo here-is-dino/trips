@@ -822,6 +822,10 @@ a:hover { text-decoration: underline; }
   margin-bottom: 32px;
   border: 1px solid var(--hairline);
   position: relative;
+  cursor: grab;
+}
+.stop-image-pan:active {
+  cursor: grabbing;
 }
 @media (max-width: 640px) {
   .stop-image-pan {
@@ -836,10 +840,10 @@ a:hover { text-decoration: underline; }
   width: auto;
   max-width: none;
   min-width: 100%;
-  animation: panLeftRight 18s ease-in-out infinite alternate;
+  animation: panRightLeft 18s ease-in-out infinite alternate;
   will-change: transform;
 }
-@keyframes panLeftRight {
+@keyframes panRightLeft {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-25%); }
 }
