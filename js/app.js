@@ -412,7 +412,7 @@ const app = {
 
       let startX = 0;
       let startPan = 0;
-      let currentPan = 0;
+      let currentPan = -maxPan; // start from rightmost position
       let isDragging = false;
       let autoPanTimer = null;
 

@@ -844,8 +844,8 @@ a:hover { text-decoration: underline; }
   will-change: transform;
 }
 @keyframes panRightLeft {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-25%); }
+  0%   { transform: translateX(-25%); }
+  100% { transform: translateX(0); }
 }
 
 .stop-meta-grid {
