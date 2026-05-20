@@ -390,13 +390,7 @@ a:hover { text-decoration: underline; }
 
 /* ── Map (Leaflet) ─────────────────────────────────────── */
 .trip-map {
-  width: 100%;
-  aspect-ratio: 16/9;
-  border-radius: var(--radius);
-  margin-bottom: 48px;
-  overflow: hidden;
-  border: 1px solid var(--hairline);
-  min-height: 250px;
+  display: none;
 }
 .trip-map .leaflet-container {
   width: 100%;
@@ -426,6 +420,8 @@ a:hover { text-decoration: underline; }
 /* ── Weather Widget ─────────────────────────────────────── */
 .weather-widget {
   margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
 }
 .weather-grid {
   display: flex;
@@ -434,6 +430,8 @@ a:hover { text-decoration: underline; }
   padding: 4px 0 8px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 .weather-grid::-webkit-scrollbar { display: none; }
 .weather-day {
