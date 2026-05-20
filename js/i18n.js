@@ -3,7 +3,7 @@ const LOCALES = {
   en: {
     // Site
     siteTitle: 'Trips with Forest',
-    siteSubtitle: 'Dino, Joshi, Bourya, Clement & Archie — on the road in the VW T3',
+    siteSubtitle: 'Dino, Joshi, Bourya, Clement & Archie<br>on the road in the VW T3',
     footer: 'VW T3 Westfalia Syncro · Bulgaria & beyond · Est. 2025',
 
     // Dashboard
@@ -51,7 +51,7 @@ const LOCALES = {
   bg: {
     // Site
     siteTitle: 'Приключения с Горан',
-    siteSubtitle: 'Дино, Йоши, Буря, Климент & Арчи — на път с VW T3',
+    siteSubtitle: 'Дино, Йоши, Буря, Климент & Арчи<br>на път с VW T3',
     footer: 'VW T3 Westfalia Syncro · България и не само · От 2025',
 
     // Dashboard

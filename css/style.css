@@ -236,37 +236,12 @@ a:hover { text-decoration: underline; }
   display: block;
   margin: 0 auto 16px;
 }
-.site-lang {
-  margin-bottom: 16px;
-}
-.lang-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 12px;
-  background: none;
-  border: 1px solid var(--hairline);
-  border-radius: 9999px;
-  cursor: pointer;
-  font-family: Inter, -apple-system, sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: var(--muted);
-  transition: all 0.15s ease;
-}
-.lang-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.lang-btn .lang-active {
-  color: var(--accent);
-}
 .site-header .subtitle {
   font-size: clamp(13px, 2vw, 16px);
   color: var(--muted);
   max-width: 480px;
   margin: 0 auto;
+  line-height: 1.5;
 }
 
 /* ── Trip Cards Grid ───────────────────────────────────── */

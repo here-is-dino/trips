@@ -109,13 +109,6 @@ const app = {
       <div class="page-dashboard">
         <header class="site-header">
           <img src="assets/images/logo.jpg" alt="${t('siteTitle')}" class="site-logo">
-          <div class="site-lang">
-            <button class="lang-btn" onclick="toggleLang()">
-              <span class="${currentLang === 'en' ? 'lang-active' : ''}">EN</span>
-              <span class="lang-sep">/</span>
-              <span class="${currentLang === 'bg' ? 'lang-active' : ''}">BG</span>
-            </button>
-          </div>
           <p class="subtitle">${t('siteSubtitle')}</p>
         </header>
         <section class="trips-grid">
