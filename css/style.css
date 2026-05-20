@@ -229,12 +229,38 @@ a:hover { text-decoration: underline; }
   text-align: center;
   padding: 64px 24px 48px;
 }
-.site-header h1 {
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 500;
-  letter-spacing: -1.5px;
-  color: var(--ink);
-  margin-bottom: 8px;
+.site-logo {
+  max-width: 280px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 16px;
+}
+.site-lang {
+  margin-bottom: 16px;
+}
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: none;
+  border: 1px solid var(--hairline);
+  border-radius: 9999px;
+  cursor: pointer;
+  font-family: Inter, -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--muted);
+  transition: all 0.15s ease;
+}
+.lang-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.lang-btn .lang-active {
+  color: var(--accent);
 }
 .site-header .subtitle {
   font-size: clamp(13px, 2vw, 16px);
@@ -721,6 +747,31 @@ a:hover { text-decoration: underline; }
 }
 .gallery-item:hover img { transform: scale(1.05); }
 
+.schedule-maps-link {
+  padding: 2px 0 8px 56px;
+  border-bottom: 1px solid var(--hairline);
+}
+@media (max-width: 640px) {
+  .schedule-maps-link {
+    padding: 2px 0 8px 44px;
+  }
+}
+.schedule-maps-link:last-child {
+  border-bottom: none;
+}
+.schedule-maps-link a {
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 0;
+}
+.schedule-maps-link a:hover {
+  text-decoration: underline;
+}
 .schedule-item.has-stop {
   cursor: pointer;
   transition: background 0.15s ease;

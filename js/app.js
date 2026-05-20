@@ -108,7 +108,14 @@ const app = {
     return `
       <div class="page-dashboard">
         <header class="site-header">
-          <h1>${t('siteTitle')}</h1>
+          <img src="assets/images/logo.jpg" alt="${t('siteTitle')}" class="site-logo">
+          <div class="site-lang">
+            <button class="lang-btn" onclick="toggleLang()">
+              <span class="${currentLang === 'en' ? 'lang-active' : ''}">EN</span>
+              <span class="lang-sep">/</span>
+              <span class="${currentLang === 'bg' ? 'lang-active' : ''}">BG</span>
+            </button>
+          </div>
           <p class="subtitle">${t('siteSubtitle')}</p>
         </header>
         <section class="trips-grid">
@@ -204,14 +211,21 @@ const app = {
               </summary>
               <div class="day-content">
                 <ul class="schedule">
-                  ${day.schedule.map((item) => `
+                  ${day.schedule.map((item) => {
+                    const stop = item.stopId ? getStop(trip.id, item.stopId) : null;
+                    return `
                     <li class="schedule-item${item.stopId ? ' has-stop' : ''}" ${item.stopId ? `data-stop-id="${item.stopId}" data-trip-id="${trip.id}"` : ''}>
                       <span class="schedule-time">${item.time}</span>
                       <span class="schedule-icon">${item.icon}</span>
                       <span class="schedule-activity">${L(item.activity)}</span>
                       ${item.stopId ? '<span class="stop-link-icon">→</span>' : ''}
                     </li>
-                  `).join('')}
+                    ${stop && stop.mapsUrl ? `
+                      <li class="schedule-maps-link">
+                        <a href="${stop.mapsUrl}" target="_blank" rel="noopener">📍 ${t('openInMaps')}</a>
+                      </li>
+                    ` : ''}
+                  `}).join('')}
                 </ul>
                 ${day.notes ? `<p class="day-notes">💡 ${L(day.notes)}</p>` : ''}
                 ${day.gallery && day.gallery.length > 0 ? this.renderGallery(day.gallery) : ''}
