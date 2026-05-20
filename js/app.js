@@ -298,13 +298,18 @@ const app = {
         </nav>
 
         <header class="stop-header">
-          ${stop.image ? `<img src="${stop.image}" alt="${L(stop.name)}" class="stop-hero-image">` : ''}
           <h1>${L(stop.name)}</h1>
           <p class="stop-subtitle">${L(stop.subtitle)}</p>
         </header>
 
         <div class="stop-content">
           <p class="stop-description">${L(stop.description)}</p>
+
+          ${stop.image ? `
+            <div class="stop-image-pan">
+              <img src="${stop.image}" alt="${L(stop.name)}">
+            </div>
+          ` : ''}
 
           <div class="stop-meta-grid">
             ${stop.duration ? `
