@@ -16,8 +16,8 @@ const TRIPS = [
     vehicle: 'VW T3 Westfalia Syncro',
     crew: { en: ['Dino', 'Joshi', 'Bourya', 'Clement', 'Archie'], bg: ['Дино', 'Йоши', 'Буря', 'Климент', 'Арчи'] },
     highlights: {
-      en: ['Tsepina Fortress', 'Vacha Gorge', 'Vacha Dam', 'Wild camp on plateau', 'Devin spa town', 'Borino village'],
-      bg: ['Крепостта Цепина', 'Въчинско ждрело', 'Язовир Въча', 'Див къмпинг на платото', 'Курорт Девин', 'Село Борино'],
+      en: ['Tsepina Fortress', 'Vacha Gorge', 'Vacha Dam', 'Wild camp on plateau', 'Snežanka Cave', 'Nature walk'],
+      bg: ['Крепостта Цепина', 'Въчинско ждрело', 'Язовир Въча', 'Див къмпинг на платото', 'Пещера Снежанка', 'Разходка в природата'],
     },
     map: {
       center: [42.100, 24.400],
@@ -27,8 +27,7 @@ const TRIPS = [
         { name: { en: 'Dorkovo', bg: 'Дорково' }, lat: 42.108, lng: 24.318, type: 'stop', label: { en: 'Tsepina Fortress & village', bg: 'Крепостта Цепина и село' } },
         { name: { en: 'Vacha Dam', bg: 'Язовир Въча' }, lat: 42.135, lng: 24.455, type: 'highlight', label: { en: 'Dramatic dam in the gorge', bg: 'Драматичен язовир в каньона' } },
         { name: { en: 'Plateau Wild Camp', bg: 'Див къмпинг на платото' }, lat: 42.180, lng: 24.520, type: 'camp', label: { en: 'Wild camp — pine forest plateau', bg: 'Див къмпинг — борова гора на платото' } },
-        { name: { en: 'Devin', bg: 'Девин' }, lat: 41.740, lng: 24.400, type: 'stop', label: { en: 'Spa town — coffee & spring water', bg: 'Курорт — кафе и изворна вода' } },
-        { name: { en: 'Borino', bg: 'Борино' }, lat: 41.685, lng: 24.290, type: 'highlight', label: { en: 'High Rhodope village', bg: 'Високо родопско село' } },
+        { name: { en: 'Snežanka Cave', bg: 'Пещера Снежанка' }, lat: 42.017, lng: 24.433, type: 'highlight', label: { en: 'Magical ice cave', bg: 'Магична ледена пещера' } },
         { name: { en: 'Sofia', bg: 'София' }, lat: 42.6977, lng: 23.3219, type: 'end', label: { en: 'Home', bg: 'Начало' } },
       ]
     },
@@ -129,6 +128,29 @@ const TRIPS = [
         mapsUrl: 'https://www.google.com/maps/place/Borino,+Bulgaria/@41.815,24.345,14z',
         wikipediaUrl: 'https://en.wikipedia.org/wiki/Borino',
       },
+      'snezhanka-cave': {
+        name: { en: 'Snežanka Cave', bg: 'Пещера Снежанка' },
+        subtitle: { en: 'Magical ice cave in the Rhodopes', bg: 'Магична ледена пещера в Родопите' },
+        lat: 42.017, lng: 24.433,
+        image: null,
+        description: {
+          en: 'A stunning cave in the western Rhodopes, named after the Bulgarian word for "Snow White" (Снежанка). The cave is famous for its beautiful ice formations, stalactites, and stalagmites that create a fairy-tale underground world. The temperature inside stays cool year-round, making it a perfect escape on a warm day.\n\nSnežanka Cave is one of the most visited caves in the Rhodope mountains. It was discovered in the 1960s and quickly became a natural landmark. The cave features several chambers with impressive calcite formations, including curtains, columns, and flowstone. The entrance is located near the village of Peshtera, and the cave extends about 200 meters underground. The name "Snežanka" comes from the white, snow-like appearance of the ice formations near the entrance during winter months.',
+          bg: 'Впечатваща пещера в западните Родопи, наречена на българската дума за "Снежанка". Пещерата е известна с красивите си ледени формации, сталактити и сталагмити, които създават приказен подземен свят. Температурата вътре остава хладен през цялата година, което я прави перфектно убежище в горещ ден.\n\nПещера Снежанка е една от най-посещаваните пещери в Родопите. Открита е през 60-те години на XX век и бързо става природна забележителност. Пещерата има няколко зали с впечатващи калцитови формации, включително завеси, колони и натеци. Входът се намира близо до село Пещера, а пещерата се простира около 200 м под земята. Името "Снежанка" идва от белия, снежен вид на ледените формации при входа през зимните месеци.',
+        },
+        highlights: {
+          en: ['Beautiful ice formations and stalactites', 'Cool temperature year-round — perfect summer escape', 'Fairy-tale underground chambers', 'One of the most visited caves in the Rhodopes', 'Easy access from the main road'],
+          bg: ['Красиви ледени формации и сталактити', 'Хладна температура през цялата година — перфектно лято', 'Приказни подземни зали', 'Една от най-посещаваните пещери в Родопите', 'Лесен достъп от главния път'],
+        },
+        tips: {
+          en: 'Bring a light jacket — it\'s cool inside even in summer. The cave is stroller-unfriendly (use the carrier for Clement). Wear shoes with good grip as the floor can be slippery. Photography is allowed but no flash.',
+          bg: 'Занесете лека яке — вътре е хладно дори през лято. Пещерата не е подходяща за количка (използвайте раница за Климент). Носете обувки с добро сцепление, подът може да е хлъзгав. Снимането е разрешено, но без блиц.',
+        },
+        kidFriendly: true, dogFriendly: false,
+        accessibility: { en: 'Not stroller-friendly — uneven cave floor', bg: 'Не е подходящо за количка — неравен под в пещерата' },
+        bestTime: { en: 'Midday (12-2pm)', bg: 'Обяд (12-14ч)' },
+        duration: { en: '30-45 min', bg: '30-45 мин' },
+        mapsUrl: 'https://www.google.com/maps/place/Snezhanka+Cave/@42.017,24.433,15z',
+      },
     },
     days: [
       {
@@ -154,19 +176,18 @@ const TRIPS = [
       {
         day: 2,
         date: '2026-05-21',
-        title: { en: 'Northbound — Devin, Borino & Home', bg: 'На север — Девин, Борино и вкъщи' },
+        title: { en: 'Nature Walk, Snežanka Cave & Home', bg: 'Разходка в природата, пещера Снежанка и вкъщи' },
         distance: '~170 km',
         completed: false,
         schedule: [
           { time: '08:00', activity: { en: 'Breakfast at camp. Slow morning, Archie gets a proper run in the pines', bg: 'Закуска на лагер. Бавна сутрин, Арчи се разхожда на воля в боровете' }, icon: '☕' },
-          { time: '10:00', activity: { en: 'Drive down toward Devin (~45 min). Descent gives completely different views of the Rhodopes', bg: 'Караван надолу към Девин (~45 мин). Спускането дава напълно различна гледка към Родопите' }, icon: '🚐' },
-          { time: '10:45', activity: { en: 'Devin — real working spa town, not touristy. Coffee on the square, fill water bottles at the public spring, grab anything from the market', bg: 'Девин — истински работещ курорт, не туристически. Кафе на площада, пълнене на бутилки от обществения извора, пазаруване' }, icon: '☕', stopId: 'devin' },
-          { time: '11:15', activity: { en: 'Borino — 20 min north on a narrow road climbing back into the trees. Classic high-Rhodope village at ~1000m — stone houses, walnut trees, old women in yards, complete quiet', bg: 'Борино — 20 мин на север по тесен път, изкачващ се обратно сред дърветата. Класическо високо родопско село на ~1000м — каменни къщи, орехови дървета, стари жени в дворовете, пълна тишина' }, icon: '🏘️', stopId: 'borino' },
-          { time: '12:00', activity: { en: 'Final picnic lunch under a tree in Borino before the long drive home', bg: 'Последен пикник под дърво в Борино преди дългото караван вкъщи' }, icon: '🍽️' },
-          { time: '13:00', activity: { en: 'Head north — road down to Velingrad, then Kostenets and E79. Plateau and pine forest, comfortable driving', bg: 'На север — път надолу до Велинград, после Костенец и E79. Плато и борова гора, комфортно караван' }, icon: '🚐' },
+          { time: '09:00', activity: { en: 'Nature walk around Vacha Dam — exploring the mountain trails and enjoying the views', bg: 'Разходка в природата около язовир Въча — изследване на планинските пътеки и гледките' }, icon: '🥾' },
+          { time: '11:00', activity: { en: 'Pack up camp and drive toward Snežanka Cave (~1.5h)', bg: 'Прибиране на лагер и караван към пещера Снежанка (~1.5ч)' }, icon: '🚐' },
+          { time: '12:30', activity: { en: 'Snežanka Cave — a magical ice cave in the Rhodopes with stunning stalactites and stalagmites', bg: 'Пещера Снежанка — магична ледена пещера в Родопите с впечатващи сталактити и сталагмити' }, icon: '🧊', stopId: 'snezhanka-cave' },
+          { time: '14:00', activity: { en: 'Lunch stop en route back to Sofia', bg: 'Обяд по пътя обратно до София' }, icon: '🍽️' },
           { time: '16:30', activity: { en: 'Home! Well inside 19:00', bg: 'Вкъщи! Добре преди 19:00' }, icon: '🏠' },
         ],
-        notes: { en: 'Borino is the kind of village that hasn\'t changed shape in 80 years. No tourist infrastructure — just authenticity. Total budget ~€80-100 for two days.', bg: 'Борино е такова село, което не е променило формата си от 80 години. Без туристическа инфраструктура — само автентичност. Общ бюджет ~€80-100 за два дни.' },
+        notes: { en: 'The nature walk around Vacha Dam was beautiful — mountain trails with stunning views. Snežanka Cave is a must-see in the Rhodopes. Total budget ~€80-100 for two days.', bg: 'Разходката около язовир Въча е била красива — планински пътеки с невероятни гледки. Пещера Снежанка е задължителна за посещение в Родопите. Общ бюджет ~€80-100 за два дни.' },
         gallery: []
       }
     ],
